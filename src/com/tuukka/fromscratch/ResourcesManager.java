@@ -6,6 +6,8 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 
@@ -13,12 +15,18 @@ public class ResourcesManager {
 	
 	private static final ResourcesManager INSTANCE = new ResourcesManager();
 
+	public ITiledTextureRegion player_region;
+
 	public BaseGameActivity activity;
 	public Engine engine;
 	public Camera camera;
     public VertexBufferObjectManager vbom;
     public Font font;
 
+    // textures
+    public ITextureRegion banana;
+    public ITextureRegion pacman;
+    
 	public BuildableBitmapTextureAtlas gameTextureAtlas;
     
 	private ResourcesManager() {
