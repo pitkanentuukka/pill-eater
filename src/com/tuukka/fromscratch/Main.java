@@ -34,7 +34,7 @@ public class Main extends SimpleBaseGameActivity implements IAccelerationListene
 	private Camera camera;
 	private Scene scene; 
 	private BitmapTextureAtlas texture;
-
+	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		// TODO Auto-generated method stub
@@ -54,7 +54,7 @@ public class Main extends SimpleBaseGameActivity implements IAccelerationListene
 	protected Scene onCreateScene() {
 		// TODO Auto-generated method stub
 		scene = new Scene();
-		
+
 		return scene;		
 	}
 	
