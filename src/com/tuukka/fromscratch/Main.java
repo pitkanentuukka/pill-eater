@@ -15,6 +15,8 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.IBackground;
 import org.andengine.entity.util.FPSLogger;
+import org.andengine.input.sensor.acceleration.AccelerationData;
+import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -24,7 +26,7 @@ import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.color.Color;
 
-public class Main extends SimpleBaseGameActivity {
+public class Main extends SimpleBaseGameActivity implements IAccelerationListener {
 	
 	
 	private static final float WIDTH = 800;
@@ -61,6 +63,18 @@ public class Main extends SimpleBaseGameActivity {
 	  // Create a fixed step engine updating at 60 steps per second
 	    return new FixedStepEngine(pEngineOptions, 60);
 	  }
+
+	@Override
+	public void onAccelerationAccuracyChanged(AccelerationData pAccelerationData) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAccelerationChanged(AccelerationData pAccelerationData) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 
