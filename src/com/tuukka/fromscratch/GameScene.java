@@ -26,7 +26,7 @@ public class GameScene extends BaseScene {
 	private int score = 0;
 	private PhysicsWorld physicsWorld;
 	private Player player;
-	private Sprite pill;
+	private Sprite redpill;
 	
 	public void createScene() {
 		
@@ -35,7 +35,26 @@ public class GameScene extends BaseScene {
 	    createPhysics();
 	    
 	    //createGameOverText();
+	    player = new Player((this.getWidth()/2), (this.getHeight()/2), vbom, camera, physicsWorld);
+	    locatePill();
 	    
+
+	    
+	}
+
+	private void locatePill() {
+		// TODO Auto-generated method stub
+		int X =(int) ((int) Math.random() * this.getWidth());
+		int Y =(int) ((int) Math.random() * this.getHeight());
+		if (redpill == null) {
+			//redpill = new Sprite(X, Y, vbom, camera, physicsWorld);
+			// create a new pill
+		} else {
+		// relocate the old one
+			redpill.setX(X);
+			redpill.setY(Y);
+		}
+
 		
 	}
 

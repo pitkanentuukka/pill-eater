@@ -8,6 +8,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 
@@ -16,6 +17,7 @@ public class ResourcesManager {
 	private static final ResourcesManager INSTANCE = new ResourcesManager();
 
 	public ITiledTextureRegion player_region;
+	public TextureRegion redpill_region;
 
 	public BaseGameActivity activity;
 	public Engine engine;
@@ -70,6 +72,8 @@ public class ResourcesManager {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
    	    gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
    	    player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "pacman.png", 2, 1);
+   	    redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
+   	   
     }
 	
 }

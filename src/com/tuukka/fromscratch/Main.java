@@ -33,7 +33,7 @@ public class Main extends SimpleBaseGameActivity implements IAccelerationListene
 	private static final float WIDTH = 800;
 	private static final float HEIGHT = 480;
 	private Camera camera;
-	private Scene scene; 
+	private BaseScene scene; 
 	private BitmapTextureAtlas texture;
 	
 	@Override
@@ -55,10 +55,6 @@ public class Main extends SimpleBaseGameActivity implements IAccelerationListene
 	protected Scene onCreateScene() {
 		SceneManager.getInstance().createLoadingScene();
 		return SceneManager.getInstance().getCurrentScene();
-		// TODO Auto-generated method stub
-		//scene = new Scene();
-		//return SceneManager.getInstance().createScene(SceneType.SCENE_GAME);
-	//	return scene;		
 	}
 	
 	@Override
