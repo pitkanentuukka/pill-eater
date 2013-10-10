@@ -54,6 +54,7 @@ public class Main extends SimpleBaseGameActivity implements IAccelerationListene
 	@Override
 	protected Scene onCreateScene() {
 		SceneManager.getInstance().createLoadingScene();
+		return SceneManager.getInstance().getCurrentScene();
 		// TODO Auto-generated method stub
 		//scene = new Scene();
 		//return SceneManager.getInstance().createScene(SceneType.SCENE_GAME);
