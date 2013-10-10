@@ -4,6 +4,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
@@ -19,6 +20,11 @@ public class Player extends AnimatedSprite {
         createPhysics(camera, physicsWorld);
         camera.setChaseEntity(this);
     }
+
+	public Player(float x, float y, ITiledTextureRegion player_region,
+			VertexBufferObjectManager vbom) {
+		super(x, y, player_region, vbom);
+	}
 
 	private void createPhysics(final Camera camera, PhysicsWorld physicsWorld)
 	{ 

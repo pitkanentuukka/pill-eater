@@ -6,6 +6,7 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
+import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.align.HorizontalAlign;
@@ -13,8 +14,10 @@ import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.tuukka.fromscratch.SceneManager.SceneType;
@@ -26,7 +29,7 @@ public class GameScene extends BaseScene {
 	private int score = 0;
 	private PhysicsWorld physicsWorld;
 	private Player player;
-	private Sprite redpill;
+	private Pill redpill;
 	
 	public void createScene() {
 		
@@ -35,25 +38,21 @@ public class GameScene extends BaseScene {
 	    createPhysics();
 	    
 	    //createGameOverText();
-	    player = new Player((this.getWidth()/2), (this.getHeight()/2), vbom, camera, physicsWorld);
-	    locatePill();
+	    player = new Player((this.getWidth()/2), (this.getHeight()/2), resourcesManager.player_region, vbom);
+
+	    final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
+        PhysicsFactory.createBoxBody(physicsWorld, player, BodyType.DynamicBody, playerFixtureDef).setUserData("player");
+//	    locatePill();
+        this.attachChild(player);
+        float redpillY = (float) (Math.random() * this.getWidth());
+        float redpillX = (float) (Math.random() * this.getHeight());
+        redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
+        this.attachChild(redpill);
 	    
 
 	    
 	}
 
-	private void locatePill() {
-		// TODO Auto-generated method stub
-		int X =(int) ((int) Math.random() * this.getWidth());
-		int Y =(int) ((int) Math.random() * this.getHeight());
-		if (redpill == null) {
-			//redpill = new Sprite(X, Y, vbom, camera, physicsWorld);
-			// create a new pill
-		} else {
-		// relocate the old one
-			redpill.setX(X);
-			redpill.setY(Y);
-		}
 
 		
 	}
