@@ -25,6 +25,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.color.Color;
+import com.tuukka.fromscratch.SceneManager.SceneType;
 
 public class Main extends SimpleBaseGameActivity implements IAccelerationListener {
 	
@@ -52,10 +53,11 @@ public class Main extends SimpleBaseGameActivity implements IAccelerationListene
 
 	@Override
 	protected Scene onCreateScene() {
+		SceneManager.getInstance().createLoadingScene();
 		// TODO Auto-generated method stub
-		scene = new Scene();
-
-		return scene;		
+		//scene = new Scene();
+		//return SceneManager.getInstance().createScene(SceneType.SCENE_GAME);
+	//	return scene;		
 	}
 	
 	@Override
