@@ -69,7 +69,7 @@ public class ResourcesManager {
     private void loadGameGraphics()
     {
     	
-    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
    	    gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
    	    player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "pacman.png", 2, 1);
    	    redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
