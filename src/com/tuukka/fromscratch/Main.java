@@ -40,6 +40,7 @@ public class Main extends SimpleBaseGameActivity {
 		ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
 		ResourcesManager.getInstance().loadGameResources();
 		Log.i("Main", "loaded game resources");
+		SceneManager.getInstance().createGameScene();
 	}
 
 	@Override
