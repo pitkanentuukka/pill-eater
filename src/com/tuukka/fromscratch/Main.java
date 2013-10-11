@@ -11,7 +11,10 @@ import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+
+import android.util.Log;
 
 public class Main extends SimpleBaseGameActivity {
 	
@@ -34,18 +37,22 @@ public class Main extends SimpleBaseGameActivity {
 	@Override
 	protected void onCreateResources() throws IOException {
 		// TODO Auto-generated method stub
-		
+		ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
+		ResourcesManager.getInstance().loadGameResources();
+		Log.i("Main", "loaded game resources");
 	}
 
 	@Override
 	protected Scene onCreateScene() {
 		SceneManager.getInstance().createLoadingScene();
+		Log.i("Main", "scenemanager created loadingscene");
 		return SceneManager.getInstance().getCurrentScene();
 	}
 	
 	@Override
 	public Engine onCreateEngine(EngineOptions pEngineOptions) {
 	  // Create a fixed step engine updating at 60 steps per second
+		Log.i("Main", "created fixedstepengine");
 	    return new FixedStepEngine(pEngineOptions, 60);
 	  }
 
