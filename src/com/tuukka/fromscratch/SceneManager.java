@@ -1,6 +1,9 @@
 package com.tuukka.fromscratch;
 
+import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
+import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
+
 
 import com.tuukka.fromscratch.SceneManager.SceneType;
 
@@ -8,8 +11,10 @@ public class SceneManager {
 	
 	private static SceneManager INSTANCE= new SceneManager();
 	
+	private Engine engine = ResourcesManager.getInstance().engine;
 	private BaseScene loadingScene;
 	private BaseScene gameScene;
+	private BaseScene splashScene;
 	
     private BaseScene currentScene;
 
@@ -18,6 +23,7 @@ public class SceneManager {
 	public enum SceneType {
 		SCENE_LOADING,
 		SCENE_GAME,
+		SCENE_SPLASH,
 	}
 	
 	private SceneManager() {
@@ -26,6 +32,13 @@ public class SceneManager {
 
 	public static SceneManager getInstance() {
 		return INSTANCE;
+	}
+
+	public void setScene(BaseScene scene)
+	{
+		engine.setScene(scene);
+		currentScene = scene;
+		currentSceneType = scene.getSceneType();
 	}
 
 
@@ -49,6 +62,16 @@ public class SceneManager {
 
 	public SceneType getCurrentSceneType() {
 		return currentScene.getSceneType();
+	}
+
+	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
+		// TODO Auto-generated method stub
+		
+		ResourcesManager.getInstance().loadSplashScreen();
+		splashScene = new SplashScene();
+		currentScene = splashScene;
+		pOnCreateSceneCallback.onCreateSceneFinished(splashScene);
+
 	}
 
 }

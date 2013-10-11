@@ -3,7 +3,10 @@ package com.tuukka.fromscratch;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -11,6 +14,7 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.util.adt.color.Color;
 
 public class ResourcesManager {
 	
@@ -41,17 +45,16 @@ public class ResourcesManager {
 	}
 	
 	
-    public static void prepareManager(Engine engine, BaseGameActivity activity, Camera camera, VertexBufferObjectManager vbom)
+    public static void prepareManager(Engine engine, BaseGameActivity activity, Camera camera, VertexBufferObjectManager vbom) 
     {
         getInstance().engine = engine;
         getInstance().activity = activity;
         getInstance().camera = camera;
-        getInstance().vbom = vbom;
+    	getInstance().vbom = vbom;
     }
     public void loadGameResources()
     {
     	loadGameGraphics();
-    	loadGameFonts();
     	loadGameAudio();
     }
 
@@ -62,6 +65,13 @@ public class ResourcesManager {
 
 	private void loadGameFonts() {
 		// TODO Auto-generated method stub
+
+		FontFactory.setAssetBasePath("font/");
+		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+		//font = FontFactory.createFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50, true, Color.WHITE, 2, Color.BLACK);
+		font = FontFactory.createFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50, true, 2 );
+		font.load();
 		
 	}
 
@@ -75,5 +85,11 @@ public class ResourcesManager {
    	    redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
    	   
     }
+
+	public void loadSplashScreen() {
+		// TODO Auto-generated method stub
+		
+    	loadGameFonts();
+	}
 	
 }

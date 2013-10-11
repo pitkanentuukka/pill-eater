@@ -12,11 +12,12 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import android.util.Log;
 
-public class Main extends SimpleBaseGameActivity {
+public class Main extends BaseGameActivity {
 	
 	
 	private static final float WIDTH = 800;
@@ -24,8 +25,7 @@ public class Main extends SimpleBaseGameActivity {
 	private Camera camera;
 	private BaseScene scene; 
 	private BitmapTextureAtlas texture;
-	
-	@Override
+/*	
 	public EngineOptions onCreateEngineOptions() {
 		// TODO Auto-generated method stub
 		camera = new Camera(0, 0, WIDTH, HEIGHT);
@@ -34,7 +34,6 @@ public class Main extends SimpleBaseGameActivity {
 		return engineoptions;
 	}
 
-	@Override
 	protected void onCreateResources() throws IOException {
 		// TODO Auto-generated method stub
 		ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
@@ -43,21 +42,50 @@ public class Main extends SimpleBaseGameActivity {
 		SceneManager.getInstance().createGameScene();
 	}
 
-	@Override
 	protected Scene onCreateScene() {
 		SceneManager.getInstance().createLoadingScene();
 		Log.i("Main", "scenemanager created loadingscene");
 		return SceneManager.getInstance().getCurrentScene();
 	}
 	
-	@Override
 	public Engine onCreateEngine(EngineOptions pEngineOptions) {
 	  // Create a fixed step engine updating at 60 steps per second
 		Log.i("Main", "created fixedstepengine");
 	    return new FixedStepEngine(pEngineOptions, 60);
 	  }
 
-	
+	*/
+	@Override
+	public EngineOptions onCreateEngineOptions() {
+		// TODO Auto-generated method stub
+		camera = new Camera(0, 0, WIDTH, HEIGHT);
+		EngineOptions engineoptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
+		engineoptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
+		return engineoptions;
+	}
+	@Override
+	public void onCreateResources(
+			OnCreateResourcesCallback pOnCreateResourcesCallback)
+			throws IOException {
+		// TODO Auto-generated method stub
+		
+		ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
+		pOnCreateResourcesCallback.onCreateResourcesFinished();
+	}
+	@Override
+	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
+			throws IOException {
+		// TODO Auto-generated method stub
+		SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
+		
+	}
+	@Override
+	public void onPopulateScene(Scene pScene,
+			OnPopulateSceneCallback pOnPopulateSceneCallback)
+			throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 	// ===========================================================
