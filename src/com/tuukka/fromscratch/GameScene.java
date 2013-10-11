@@ -17,6 +17,7 @@ import org.andengine.input.sensor.acceleration.IAccelerationListener;
 
 
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -37,6 +38,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private Pill redpill;
 	
 	public void createScene() {
+		Log.i("Gamescene", "creating gamescene!");
 		
 		createBackground();
 		createHUD();
