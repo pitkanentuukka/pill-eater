@@ -5,29 +5,15 @@ import java.io.IOException;
 import org.andengine.engine.Engine;
 import org.andengine.engine.FixedStepEngine;
 import org.andengine.engine.camera.Camera;
-import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
-import org.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
-import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.IBackground;
-import org.andengine.entity.util.FPSLogger;
-import org.andengine.input.sensor.acceleration.AccelerationData;
-import org.andengine.input.sensor.acceleration.IAccelerationListener;
-import org.andengine.opengl.texture.Texture;
-import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
-import org.andengine.util.adt.color.Color;
-import com.tuukka.fromscratch.SceneManager.SceneType;
 
-public class Main extends SimpleBaseGameActivity implements IAccelerationListener {
+public class Main extends SimpleBaseGameActivity {
 	
 	
 	private static final float WIDTH = 800;
@@ -63,17 +49,6 @@ public class Main extends SimpleBaseGameActivity implements IAccelerationListene
 	    return new FixedStepEngine(pEngineOptions, 60);
 	  }
 
-	@Override
-	public void onAccelerationAccuracyChanged(AccelerationData pAccelerationData) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onAccelerationChanged(AccelerationData pAccelerationData) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 
 
