@@ -13,6 +13,8 @@ public class SceneManager {
 	
     private BaseScene currentScene;
 
+	private SceneType currentSceneType;
+
 	public enum SceneType {
 		SCENE_LOADING,
 		SCENE_GAME,
@@ -29,19 +31,24 @@ public class SceneManager {
 
 	public void createLoadingScene() {
 		// TODO Auto-generated method stub
-		
+		loadingScene = new LoadingScene();
+		currentScene = loadingScene;
+		currentSceneType = currentScene.getSceneType();
 	}
 
 	private void createGameScene() {
 		// TODO Auto-generated method stub
+		gameScene = new GameScene();
+		currentScene = gameScene;
+		currentSceneType = currentScene.getSceneType();
 	}
 
 	public BaseScene getCurrentScene() {
-		// TODO Auto-generated method stub
-
 		return currentScene;
 	}
 
-
+	public SceneType getCurrentSceneType() {
+		return currentScene.getSceneType();
+	}
 
 }
