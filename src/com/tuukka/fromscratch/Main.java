@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.andengine.engine.Engine;
 import org.andengine.engine.FixedStepEngine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
@@ -39,7 +41,7 @@ public class Main extends BaseGameActivity {
 		ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
 		ResourcesManager.getInstance().loadGameResources();
 		Log.i("Main", "loaded game resources");
-		SceneManager.getInstance().createGameScene();
+		SceneManager.getInstance().bcreateGameScene();
 	}
 
 	protected Scene onCreateScene() {
@@ -83,7 +85,15 @@ public class Main extends BaseGameActivity {
 	public void onPopulateScene(Scene pScene,
 			OnPopulateSceneCallback pOnPopulateSceneCallback)
 			throws IOException {
-		// TODO Auto-generated method stub
+		mEngine.registerUpdateHandler(new TimerHandler(2f, new ITimerCallback() 
+		{
+            public void onTimePassed(final TimerHandler pTimerHandler) 
+            {
+                mEngine.unregisterUpdateHandler(pTimerHandler);
+                SceneManager.getInstance().createGameScene();
+            }
+		}));
+		pOnPopulateSceneCallback.onPopulateSceneFinished();
 		
 	}
 

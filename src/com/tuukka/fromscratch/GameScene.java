@@ -38,15 +38,16 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private Pill redpill;
 	
 	public void createScene() {
-		Log.i("Gamescene", "creating gamescene!");
+		
+		ResourcesManager.getInstance().loadGameResources();
 		
 		createBackground();
 		createHUD();
 	    createPhysics();
 	    
 	    //createGameOverText();
-	    player = new Player((this.getWidth()/2), (this.getHeight()/2), resourcesManager.player_region, vbom);
 
+	    player = new Player((this.getWidth()/2), (this.getHeight()/2), resourcesManager.player_region, vbom);
 	    final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
         PhysicsFactory.createBoxBody(physicsWorld, player, BodyType.DynamicBody, playerFixtureDef).setUserData("player");
 //	    locatePill();
