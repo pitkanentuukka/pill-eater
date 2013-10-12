@@ -53,6 +53,7 @@ public class SceneManager {
 		// TODO Auto-generated method stub
 		gameScene = new GameScene();
 		currentScene = gameScene;
+		setScene(gameScene);
 		currentSceneType = currentScene.getSceneType();
 	}
 
