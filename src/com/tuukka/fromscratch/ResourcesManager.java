@@ -76,7 +76,7 @@ public class ResourcesManager {
 	}
 
 
-    private void loadGameGraphics()
+    /*private void loadGameGraphics()
     {
     	
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -85,7 +85,15 @@ public class ResourcesManager {
    	    player_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "player_grin.png");
    	    redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
    	   
-    }
+    }*/
+	private void loadGameGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		//BitmapTextureAtlas mBitmapTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 167, 128);
+		gameTextureAtlas = new BuildableBitmapTextureAtlas(engine.getTextureManager(), 167, 128);
+		this.player_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "player_mouth_closed.png"); 
+		this.redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
+		
+	}
 
 	public void loadSplashScreen() {
 		// TODO Auto-generated method stub
