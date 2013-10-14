@@ -20,7 +20,7 @@ public class ResourcesManager {
 	
 	private static final ResourcesManager INSTANCE = new ResourcesManager();
 
-	public ITiledTextureRegion player_region;
+	public TextureRegion player_region;
 	public TextureRegion redpill_region;
 
 	public BaseGameActivity activity;
@@ -81,7 +81,8 @@ public class ResourcesManager {
     	
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
    	    gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
-   	    player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "pacman.png", 2, 1);
+   	    //player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "pacman.png", 2, 1);
+   	    player_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "player_grin.png");
    	    redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
    	   
     }

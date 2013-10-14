@@ -2,15 +2,17 @@ package com.tuukka.fromscratch;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
-public class Player extends AnimatedSprite {
+public class Player extends Sprite {
 	
 	private Body body;
 	
@@ -21,7 +23,7 @@ public class Player extends AnimatedSprite {
         camera.setChaseEntity(this);
     }
 
-	public Player(float x, float y, ITiledTextureRegion player_region,
+	public Player(float x, float y, TextureRegion player_region,
 			VertexBufferObjectManager vbom) {
 		super(x, y, player_region, vbom);
 	}
