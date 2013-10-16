@@ -21,7 +21,7 @@ public class ResourcesManager {
 	private static final ResourcesManager INSTANCE = new ResourcesManager();
 
 	public TextureRegion player_region;
-	public TextureRegion redpill_region;
+	//public TextureRegion redpill_region;
 
 	public BaseGameActivity activity;
 	public Engine engine;
@@ -91,7 +91,7 @@ public class ResourcesManager {
 		//BitmapTextureAtlas mBitmapTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 167, 128);
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(engine.getTextureManager(), 167, 128);
 		this.player_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "player_mouth_closed.png"); 
-		this.redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
+		//this.redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
 		
 	}
 

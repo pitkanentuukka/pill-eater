@@ -35,7 +35,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private int score = 0;
 	private PhysicsWorld physicsWorld;
 	private Player player;
-	private Pill redpill;
+	//private Pill redpill;
 	
 	public void createScene() {
 		
@@ -54,8 +54,8 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         this.attachChild(player);
         float redpillY = (float) (Math.random() * this.getWidth());
         float redpillX = (float) (Math.random() * this.getHeight());
-        redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
-        this.attachChild(redpill);
+     //   redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
+      //  this.attachChild(redpill);
 	    
 
 	    
