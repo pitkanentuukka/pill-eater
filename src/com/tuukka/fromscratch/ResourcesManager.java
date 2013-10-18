@@ -55,13 +55,8 @@ public class ResourcesManager {
     public void loadGameResources()
     {
     	loadGameGraphics();
-    	loadGameAudio();
     }
 
-	private void loadGameAudio() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	private void loadGameFonts() {
 		// TODO Auto-generated method stub
