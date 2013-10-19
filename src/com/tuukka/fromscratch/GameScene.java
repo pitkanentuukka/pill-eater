@@ -1,6 +1,7 @@
 package com.tuukka.fromscratch;
 
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -40,6 +41,8 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private Player player;
 	private Pill redpill;
 	private Body player_body;
+	private float CAMERA_WIDTH;
+	private float CAMERA_HEIGHT;
 	
 	public void createScene() {
 		
@@ -49,8 +52,10 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		createHUD();
 	    createPhysics();
 	    
-	    
 	    ResourcesManager.getInstance().engine.enableAccelerationSensor(activity, this);
+	    
+	    CAMERA_WIDTH = ResourcesManager.getInstance().camera.getXMax();
+	    CAMERA_HEIGHT = ResourcesManager.getInstance().camera.getYMax();
 	    
 	    //createGameOverText();
 
@@ -60,8 +65,8 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         PhysicsFactory.createBoxBody(physicsWorld, player, BodyType.DynamicBody, playerFixtureDef).setUserData("player");
 //	    locatePill();
         this.attachChild(player);
-        float redpillY = (float) (Math.random() * ResourcesManager.getInstance().camera.getYMax());
-        float redpillX = (float) (Math.random() * ResourcesManager.getInstance().camera.getXMax());
+        float redpillY = (float) (Math.random() * CAMERA_HEIGHT);
+        float redpillX = (float) (Math.random() * CAMERA_WIDTH);
         redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
         this.attachChild(redpill);
 			
@@ -70,6 +75,22 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(player, player_body, true, true));
         
         ResourcesManager.getInstance().camera.setChaseEntity(player);
+
+		final Rectangle ground = new Rectangle(CAMERA_WIDTH / 2, 1, CAMERA_WIDTH, 2, vbom);
+		final Rectangle roof = new Rectangle(CAMERA_WIDTH / 2, CAMERA_HEIGHT - 1, CAMERA_WIDTH, 2, vbom);
+		final Rectangle left = new Rectangle(1, CAMERA_HEIGHT / 2, 1, CAMERA_HEIGHT, vbom);
+		final Rectangle right = new Rectangle(CAMERA_WIDTH - 1, CAMERA_HEIGHT / 2, 2, CAMERA_HEIGHT, vbom);
+
+		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
+		PhysicsFactory.createBoxBody(this.physicsWorld, ground, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(this.physicsWorld, roof, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(this.physicsWorld, left, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(this.physicsWorld, right, BodyType.StaticBody, wallFixtureDef);
+
+		this.attachChild(ground);
+		this.attachChild(roof);
+		this.attachChild(left);
+		this.attachChild(right);
 
 	    
 	}
