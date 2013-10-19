@@ -77,7 +77,8 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 
 
 	private void createPhysics() {
-		physicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0,SensorManager.GRAVITY_EARTH), false);
+//		physicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0,SensorManager.GRAVITY_EARTH), false);
+		physicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0,0), false);
 	    physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
 		
