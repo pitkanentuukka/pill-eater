@@ -27,6 +27,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -41,6 +42,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private Player player;
 	private Pill redpill;
 	private Body player_body;
+	private Body redpill_body;
 	private float CAMERA_WIDTH;
 	private float CAMERA_HEIGHT;
 	
@@ -62,19 +64,27 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		//final FixtureDef objectFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
 	    player = new Player((ResourcesManager.getInstance().camera.getXMax()/2), (ResourcesManager.getInstance().camera.getYMax()/2), resourcesManager.player_region, vbom);
 	    final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-        PhysicsFactory.createBoxBody(physicsWorld, player, BodyType.DynamicBody, playerFixtureDef).setUserData("player");
+        //PhysicsFactory.createBoxBody(physicsWorld, player, BodyType.DynamicBody, playerFixtureDef).setUserData("player");
 //	    locatePill();
+	    player.setUserData("player");
         this.attachChild(player);
+        player_body = PhysicsFactory.createCircleBody(this.physicsWorld, player, BodyType.DynamicBody, playerFixtureDef);
+        player_body.setUserData("player");
+        this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(player, player_body, true, true));
+        
+
         float redpillY = (float) (Math.random() * CAMERA_HEIGHT);
         float redpillX = (float) (Math.random() * CAMERA_WIDTH);
         redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
+	    final FixtureDef redpillFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
+        redpill_body = PhysicsFactory.createCircleBody(this.physicsWorld, redpill, BodyType.StaticBody, redpillFixtureDef);
+        redpill_body.setUserData("redpill");
+        this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(redpill, redpill_body, true, true));
+        redpill.setUserData("redpill");
         this.attachChild(redpill);
 			
-        player_body = PhysicsFactory.createCircleBody(this.physicsWorld, player, BodyType.DynamicBody, playerFixtureDef);
-
-        this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(player, player_body, true, true));
         
-        ResourcesManager.getInstance().camera.setChaseEntity(player);
+        //ResourcesManager.getInstance().camera.setChaseEntity(player);
 
 		final Rectangle ground = new Rectangle(CAMERA_WIDTH / 2, 1, CAMERA_WIDTH, 2, vbom);
 		final Rectangle roof = new Rectangle(CAMERA_WIDTH / 2, CAMERA_HEIGHT - 1, CAMERA_WIDTH, 2, vbom);
@@ -148,7 +158,16 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	{
 		ContactListener contactListener = new ContactListener() {
 			public void beginContact(Contact contact) {
-			
+	            final Fixture x1 = contact.getFixtureA();
+	            final Fixture x2 = contact.getFixtureB();
+	            
+	            if (x1.getBody().getUserData() == "redpill" && x2.getBody().getUserData() == "player") {
+			        redpill.relocate(ResourcesManager.getInstance().camera.getXMax(), 
+        				ResourcesManager.getInstance().camera.getYMax());
+	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() == "redpill") {
+			        redpill.relocate(ResourcesManager.getInstance().camera.getXMax(), 
+        				ResourcesManager.getInstance().camera.getYMax());
+	            }
 			
 			}
 			public void endContact(Contact contact) {

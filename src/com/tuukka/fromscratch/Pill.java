@@ -17,8 +17,9 @@ public class Pill extends Sprite {
 	{
 		float pX = (float)Math.random() * X;
 		float pY = (float)Math.random() * Y;
-		this.setX(pX);
-		this.setY(pY);
+		/*this.setX(pX);
+		this.setY(pY);*/
+		this.setPosition(pX, pY);
 	}
 
 }
