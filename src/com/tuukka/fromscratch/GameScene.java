@@ -15,6 +15,7 @@ import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.util.Vector2Pool;
+import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
 import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
 
@@ -162,12 +163,16 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	            final Fixture x2 = contact.getFixtureB();
 	            
 	            if (x1.getBody().getUserData() == "redpill" && x2.getBody().getUserData() == "player") {
-			        redpill.relocate(ResourcesManager.getInstance().camera.getXMax(), 
-        				ResourcesManager.getInstance().camera.getYMax());
+			        /*redpill.relocate(ResourcesManager.getInstance().camera.getXMax(), 
+        				ResourcesManager.getInstance().camera.getYMax());*/
+	            	playerEatsAPill();
 	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() == "redpill") {
-			        redpill.relocate(ResourcesManager.getInstance().camera.getXMax(), 
-        				ResourcesManager.getInstance().camera.getYMax());
+			        /*redpill.relocate(ResourcesManager.getInstance().camera.getXMax(), 
+        				ResourcesManager.getInstance().camera.getYMax());*/
+	            	playerEatsAPill();
+	            	
 	            }
+	
 			
 			}
 			public void endContact(Contact contact) {
@@ -207,5 +212,19 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		final Vector2 gravity = Vector2Pool.obtain(pAccelerationData.getX(), pAccelerationData.getY());
 		this.physicsWorld.setGravity(gravity);
 		Vector2Pool.recycle(gravity);
+	}
+	private void playerEatsAPill() {
+        final float widthD2 = redpill.getWidth() / 2;
+        final float heightD2 = redpill.getHeight() / 2;
+        float y = (float)Math.random() * CAMERA_HEIGHT;
+        float x = (float)Math.random() * CAMERA_WIDTH;
+        
+        //final Vector2 v2 = Vector2Pool.obtain((x + widthD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, (y + heightD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
+        final Vector2 v2 = Vector2Pool.obtain((x + widthD2) / 32.0f, (y + heightD2) / 32.0f);
+        
+        
+        final float angle = redpill_body.getAngle();
+        redpill_body.setTransform(v2, angle);	
+        Vector2Pool.recycle(v2);
 	}
 }
