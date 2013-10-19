@@ -47,13 +47,13 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	    
 	    //createGameOverText();
 
-	    player = new Player((this.getWidth()/2), (this.getHeight()/2), resourcesManager.player_region, vbom);
+	    player = new Player((ResourcesManager.getInstance().camera.getXMax()/2), (ResourcesManager.getInstance().camera.getYMax()/2), resourcesManager.player_region, vbom);
 	    final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
         PhysicsFactory.createBoxBody(physicsWorld, player, BodyType.DynamicBody, playerFixtureDef).setUserData("player");
 //	    locatePill();
         this.attachChild(player);
-        float redpillY = (float) (Math.random() * this.getWidth());
-        float redpillX = (float) (Math.random() * this.getHeight());
+        float redpillY = (float) (Math.random() * ResourcesManager.getInstance().camera.getYMax());
+        float redpillX = (float) (Math.random() * ResourcesManager.getInstance().camera.getXMax());
         redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
         this.attachChild(redpill);
 	    
