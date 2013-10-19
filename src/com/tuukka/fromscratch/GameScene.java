@@ -6,8 +6,10 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
+import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
@@ -20,6 +22,7 @@ import android.hardware.SensorManager;
 import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -36,6 +39,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private PhysicsWorld physicsWorld;
 	private Player player;
 	private Pill redpill;
+	private Body player_body;
 	
 	public void createScene() {
 		
@@ -45,8 +49,12 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		createHUD();
 	    createPhysics();
 	    
+	    
+	    ResourcesManager.getInstance().engine.enableAccelerationSensor(activity, this);
+	    
 	    //createGameOverText();
 
+		//final FixtureDef objectFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
 	    player = new Player((ResourcesManager.getInstance().camera.getXMax()/2), (ResourcesManager.getInstance().camera.getYMax()/2), resourcesManager.player_region, vbom);
 	    final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
         PhysicsFactory.createBoxBody(physicsWorld, player, BodyType.DynamicBody, playerFixtureDef).setUserData("player");
@@ -56,7 +64,12 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         float redpillX = (float) (Math.random() * ResourcesManager.getInstance().camera.getXMax());
         redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
         this.attachChild(redpill);
-	    
+			
+        player_body = PhysicsFactory.createCircleBody(this.physicsWorld, player, BodyType.DynamicBody, playerFixtureDef);
+
+        this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(player, player_body, true, true));
+        
+        ResourcesManager.getInstance().camera.setChaseEntity(player);
 
 	    
 	}
