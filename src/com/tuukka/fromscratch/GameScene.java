@@ -122,7 +122,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	            {
 	                for(int i = 0; i < taskList.size(); i++)
 	                {
-	                    ((MoveBodyTask) taskList.get(i)).move();
+	                    ((Task) taskList.get(i)).run();
 	                }
 	                taskList.clear();
 	            }

@@ -6,7 +6,7 @@ import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
-public class MoveBodyTask {
+public class MoveBodyTask extends Task{
 	private Body pBody;
 	private Vector2 position;
 	private float angle;
@@ -23,7 +23,10 @@ public class MoveBodyTask {
 		position = v2;
 	}
 	
-	public void move() {
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
 		pBody.setTransform(position, angle);
+		
 	}
 }
