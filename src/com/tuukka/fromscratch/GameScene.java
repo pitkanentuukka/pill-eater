@@ -1,6 +1,10 @@
 package com.tuukka.fromscratch;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -46,6 +50,8 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private Body redpill_body;
 	private float CAMERA_WIDTH;
 	private float CAMERA_HEIGHT;
+	
+	private List taskList;
 	
 	public void createScene() {
 		
@@ -103,6 +109,31 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		this.attachChild(left);
 		this.attachChild(right);
 
+		
+		this.taskList = new LinkedList();
+		
+		this.registerUpdateHandler(new IUpdateHandler()
+	    {
+
+
+			@Override
+	        public void onUpdate(float pSecondsElapsed) {
+	            if(!taskList.isEmpty())
+	            {
+	                for(int i = 0; i < taskList.size(); i++)
+	                {
+	                    ((MoveBodyTask) taskList.get(i)).move();
+	                }
+	                taskList.clear();
+	            }
+
+	        }
+
+	        public void reset() {
+	            // TODO Auto-generated method stub
+
+	        }
+	    });
 	    
 	}
 
@@ -218,13 +249,14 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         final float heightD2 = redpill.getHeight() / 2;
         float y = (float)Math.random() * CAMERA_HEIGHT;
         float x = (float)Math.random() * CAMERA_WIDTH;
+        y +=heightD2;
+        x +=widthD2;
         
+        y /=32.0f;
+        x /=32.0f;
         //final Vector2 v2 = Vector2Pool.obtain((x + widthD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, (y + heightD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
-        final Vector2 v2 = Vector2Pool.obtain((x + widthD2) / 32.0f, (y + heightD2) / 32.0f);
-        
-        
-        final float angle = redpill_body.getAngle();
-        redpill_body.setTransform(v2, angle);	
-        Vector2Pool.recycle(v2);
+        //final Vector2 v2 = Vector2Pool.obtain((x + widthD2) / 32.0f, (y + heightD2) / 32.0f);
+        taskList.add(new MoveBodyTask(redpill_body, x, y));
+        this.score++;
 	}
 }
