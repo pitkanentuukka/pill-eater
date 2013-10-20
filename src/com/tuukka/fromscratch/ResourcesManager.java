@@ -34,8 +34,6 @@ public class ResourcesManager {
     public Font font;
 
     // textures
-    public ITextureRegion banana;
-    public ITextureRegion pacman;
     
 	public BuildableBitmapTextureAtlas gameTextureAtlas;
     
