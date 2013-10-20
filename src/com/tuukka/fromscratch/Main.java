@@ -27,36 +27,7 @@ public class Main extends BaseGameActivity {
 	private Camera camera;
 	private BaseScene scene; 
 	private BitmapTextureAtlas texture;
-/*	
-	public EngineOptions onCreateEngineOptions() {
-		// TODO Auto-generated method stub
-		camera = new Camera(0, 0, WIDTH, HEIGHT);
-		EngineOptions engineoptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
-		engineoptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
-		return engineoptions;
-	}
 
-	protected void onCreateResources() throws IOException {
-		// TODO Auto-generated method stub
-		ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
-		ResourcesManager.getInstance().loadGameResources();
-		Log.i("Main", "loaded game resources");
-		SceneManager.getInstance().bcreateGameScene();
-	}
-
-	protected Scene onCreateScene() {
-		SceneManager.getInstance().createLoadingScene();
-		Log.i("Main", "scenemanager created loadingscene");
-		return SceneManager.getInstance().getCurrentScene();
-	}
-	
-	public Engine onCreateEngine(EngineOptions pEngineOptions) {
-	  // Create a fixed step engine updating at 60 steps per second
-		Log.i("Main", "created fixedstepengine");
-	    return new FixedStepEngine(pEngineOptions, 60);
-	  }
-
-	*/
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		// TODO Auto-generated method stub
