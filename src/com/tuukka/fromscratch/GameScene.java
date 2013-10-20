@@ -66,48 +66,11 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	    CAMERA_WIDTH = ResourcesManager.getInstance().camera.getXMax();
 	    CAMERA_HEIGHT = ResourcesManager.getInstance().camera.getYMax();
 	    
-	    //createGameOverText();
-
-		//final FixtureDef objectFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-	    player = new Player((ResourcesManager.getInstance().camera.getXMax()/2), (ResourcesManager.getInstance().camera.getYMax()/2), resourcesManager.player_region, vbom);
-	    final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-        //PhysicsFactory.createBoxBody(physicsWorld, player, BodyType.DynamicBody, playerFixtureDef).setUserData("player");
-//	    locatePill();
-	    player.setUserData("player");
-        this.attachChild(player);
-        player_body = PhysicsFactory.createCircleBody(this.physicsWorld, player, BodyType.DynamicBody, playerFixtureDef);
-        player_body.setUserData("player");
-        this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(player, player_body, true, true));
-        
-
-        float redpillY = (float) (Math.random() * CAMERA_HEIGHT);
-        float redpillX = (float) (Math.random() * CAMERA_WIDTH);
-        redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
-	    final FixtureDef redpillFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-        redpill_body = PhysicsFactory.createCircleBody(this.physicsWorld, redpill, BodyType.StaticBody, redpillFixtureDef);
-        redpill_body.setUserData("redpill");
-        this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(redpill, redpill_body, true, true));
-        redpill.setUserData("redpill");
-        this.attachChild(redpill);
-			
-        
-        //ResourcesManager.getInstance().camera.setChaseEntity(player);
-
-		final Rectangle ground = new Rectangle(CAMERA_WIDTH / 2, 1, CAMERA_WIDTH, 2, vbom);
-		final Rectangle roof = new Rectangle(CAMERA_WIDTH / 2, CAMERA_HEIGHT - 1, CAMERA_WIDTH, 2, vbom);
-		final Rectangle left = new Rectangle(1, CAMERA_HEIGHT / 2, 1, CAMERA_HEIGHT, vbom);
-		final Rectangle right = new Rectangle(CAMERA_WIDTH - 1, CAMERA_HEIGHT / 2, 2, CAMERA_HEIGHT, vbom);
-
-		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
-		PhysicsFactory.createBoxBody(this.physicsWorld, ground, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.physicsWorld, roof, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.physicsWorld, left, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.physicsWorld, right, BodyType.StaticBody, wallFixtureDef);
-
-		this.attachChild(ground);
-		this.attachChild(roof);
-		this.attachChild(left);
-		this.attachChild(right);
+	    createPlayer();
+	    
+	    createPill();
+	    
+	    createBounds();
 
 		
 		this.taskList = new LinkedList();
@@ -138,6 +101,56 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	}
 
 
+	private void createBounds() {
+        // create bounds
+		final Rectangle ground = new Rectangle(CAMERA_WIDTH / 2, 1, CAMERA_WIDTH, 2, vbom);
+		final Rectangle roof = new Rectangle(CAMERA_WIDTH / 2, CAMERA_HEIGHT - 1, CAMERA_WIDTH, 2, vbom);
+		final Rectangle left = new Rectangle(1, CAMERA_HEIGHT / 2, 1, CAMERA_HEIGHT, vbom);
+		final Rectangle right = new Rectangle(CAMERA_WIDTH - 1, CAMERA_HEIGHT / 2, 2, CAMERA_HEIGHT, vbom);
+
+		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
+		PhysicsFactory.createBoxBody(this.physicsWorld, ground, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(this.physicsWorld, roof, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(this.physicsWorld, left, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(this.physicsWorld, right, BodyType.StaticBody, wallFixtureDef);
+
+		this.attachChild(ground);
+		this.attachChild(roof);
+		this.attachChild(left);
+		this.attachChild(right);
+	}
+
+
+	private void createPill() {
+        // create pill
+        float redpillY = (float) (Math.random() * CAMERA_HEIGHT);
+        float redpillX = (float) (Math.random() * CAMERA_WIDTH);
+        redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
+	    final FixtureDef redpillFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
+        redpill_body = PhysicsFactory.createCircleBody(this.physicsWorld, redpill, BodyType.StaticBody, redpillFixtureDef);
+        redpill_body.setUserData("redpill");
+        this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(redpill, redpill_body, true, true));
+        redpill.setUserData("redpill");
+        this.attachChild(redpill);
+			
+        
+		
+	}
+
+
+	private void createPlayer() {
+	    // create player
+	    player = new Player((ResourcesManager.getInstance().camera.getXMax()/2), (ResourcesManager.getInstance().camera.getYMax()/2), resourcesManager.player_region, vbom);
+	    final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
+	    player.setUserData("player");
+        this.attachChild(player);
+        player_body = PhysicsFactory.createCircleBody(this.physicsWorld, player, BodyType.DynamicBody, playerFixtureDef);
+        player_body.setUserData("player");
+        this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(player, player_body, true, true));
+		
+	}
+
+
 
 	private void createPhysics() {
 //		physicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0,SensorManager.GRAVITY_EARTH), false);
@@ -153,9 +166,9 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		scoreText = new Text(20, 420, resourcesManager.font, "score:0123456789", 
 				new TextOptions(HorizontalAlign.LEFT), vbom);
 
-	    scoreText.setAnchorCenter(0, 0);    
 		scoreText.setText("score: 0");
 		gameHUD.attachChild(scoreText);
+
 		camera.setHUD(gameHUD);
 		
 	}
@@ -195,12 +208,8 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	            final Fixture x2 = contact.getFixtureB();
 	            
 	            if (x1.getBody().getUserData() == "redpill" && x2.getBody().getUserData() == "player") {
-			        /*redpill.relocate(ResourcesManager.getInstance().camera.getXMax(), 
-        				ResourcesManager.getInstance().camera.getYMax());*/
 	            	playerEatsAPill();
 	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() == "redpill") {
-			        /*redpill.relocate(ResourcesManager.getInstance().camera.getXMax(), 
-        				ResourcesManager.getInstance().camera.getYMax());*/
 	            	playerEatsAPill();
 	            	
 	            }
