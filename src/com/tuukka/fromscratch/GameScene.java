@@ -51,7 +51,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private float CAMERA_WIDTH;
 	private float CAMERA_HEIGHT;
 	
-	private List taskList;
+	private List<Task> taskList;
 	
 	public void createScene() {
 		
@@ -245,17 +245,21 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		Vector2Pool.recycle(gravity);
 	}
 	private void playerEatsAPill() {
+		/* the minx, miny is width / 2, height / 2
+		 * the maxx, maxy is camwidth - width/2, camheight - height/2
+		 */
         final float widthD2 = redpill.getWidth() / 2;
         final float heightD2 = redpill.getHeight() / 2;
-        float y = (float)Math.random() * CAMERA_HEIGHT;
-        float x = (float)Math.random() * CAMERA_WIDTH;
-        y +=heightD2;
-        x +=widthD2;
+        float minY = widthD2;
+        float minX = heightD2;
+        // because width/2 is added to the random number, the actual max is camwidth-pillwidth
+        float maxY = CAMERA_HEIGHT - redpill.getHeight();
+        float maxX = CAMERA_WIDTH - redpill.getWidth();
+        float y = minY + (float)Math.random() * maxY;
+        float x = widthD2+(float)Math.random() * maxX;
         
         y /=32.0f;
         x /=32.0f;
-        //final Vector2 v2 = Vector2Pool.obtain((x + widthD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, (y + heightD2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
-        //final Vector2 v2 = Vector2Pool.obtain((x + widthD2) / 32.0f, (y + heightD2) / 32.0f);
         taskList.add(new MoveBodyTask(redpill_body, x, y));
         this.score++;
 	}
