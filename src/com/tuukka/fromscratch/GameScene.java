@@ -149,6 +149,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 
 	private void createHUD() {
 		gameHUD = new HUD();
+		gameHUD.setColor(Color.BLACK);
 		scoreText = new Text(20, 420, resourcesManager.font, "score:0123456789", 
 				new TextOptions(HorizontalAlign.LEFT), vbom);
 
@@ -262,5 +263,6 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         x /=32.0f;
         taskList.add(new MoveBodyTask(redpill_body, x, y));
         this.score++;
+        this.scoreText.setText("score: " + score);
 	}
 }
