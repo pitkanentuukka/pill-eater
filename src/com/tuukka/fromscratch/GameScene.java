@@ -274,5 +274,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         taskList.add(new MoveBodyTask(redpill_body, x, y));
         this.score++;
         this.scoreText.setText("score: " + score);
+        
+        player.eat();
 	}
 }
