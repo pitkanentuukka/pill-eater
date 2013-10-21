@@ -9,10 +9,18 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.os.Build;
+import android.os.Vibrator;
+
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Player extends AnimatedSprite {
 	
 	private Body body;
@@ -46,12 +54,16 @@ public class Player extends AnimatedSprite {
 		int[] pFrames = new int[2];
 		pFrames[0] = 1;
 		pFrames[1] = 0;
-		
+		Vibrator v = (Vibrator) ResourcesManager.getInstance().activity.getSystemService("VIBRATOR");
 		this.animate(durations, pFrames, 6);
 		ResourcesManager.getInstance().player_eat.play();
 		Random randomgen = new Random();
-		if (randomgen.nextInt() % 6 == 0) {
+		if (randomgen.nextInt() % 6== 0) {
 			ResourcesManager.getInstance().player_barf.play();
+			if (v != null) {
+				long[] vibpattern = {2300, 5000};
+				v.vibrate(vibpattern, -1);
+			}
 		}
 		
 	}
