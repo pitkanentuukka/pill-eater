@@ -108,7 +108,8 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		final Rectangle left = new Rectangle(1, CAMERA_HEIGHT / 2, 1, CAMERA_HEIGHT, vbom);
 		final Rectangle right = new Rectangle(CAMERA_WIDTH - 1, CAMERA_HEIGHT / 2, 2, CAMERA_HEIGHT, vbom);
 
-		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
+		// final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
+		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0.0f, 0.0f, 1.5f);
 		PhysicsFactory.createBoxBody(this.physicsWorld, ground, BodyType.StaticBody, wallFixtureDef);
 		PhysicsFactory.createBoxBody(this.physicsWorld, roof, BodyType.StaticBody, wallFixtureDef);
 		PhysicsFactory.createBoxBody(this.physicsWorld, left, BodyType.StaticBody, wallFixtureDef);
@@ -126,7 +127,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         float redpillY = (float) (Math.random() * CAMERA_HEIGHT);
         float redpillX = (float) (Math.random() * CAMERA_WIDTH);
         redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
-	    final FixtureDef redpillFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
+	    final FixtureDef redpillFixtureDef = PhysicsFactory.createFixtureDef(0, 0.0f, 0.0f);
         redpill_body = PhysicsFactory.createCircleBody(this.physicsWorld, redpill, BodyType.StaticBody, redpillFixtureDef);
         redpill_body.setUserData("redpill");
         this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(redpill, redpill_body, true, true));
@@ -141,7 +142,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private void createPlayer() {
 	    // create player
 	    player = new Player((ResourcesManager.getInstance().camera.getXMax()/2), (ResourcesManager.getInstance().camera.getYMax()/2), resourcesManager.player_region, vbom);
-	    final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
+	    final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 1.0f);
 	    player.setUserData("player");
         this.attachChild(player);
         player_body = PhysicsFactory.createCircleBody(this.physicsWorld, player, BodyType.DynamicBody, playerFixtureDef);
