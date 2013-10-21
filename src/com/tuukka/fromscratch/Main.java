@@ -33,6 +33,8 @@ public class Main extends BaseGameActivity {
 		// TODO Auto-generated method stub
 		camera = new Camera(0, 0, WIDTH, HEIGHT);
 		EngineOptions engineoptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
+		engineoptions.getAudioOptions().setNeedsSound(true);
+
 		engineoptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 		return engineoptions;
 	}

@@ -1,5 +1,9 @@
 package com.tuukka.fromscratch;
 
+import java.io.IOException;
+
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.font.Font;
@@ -27,6 +31,9 @@ public class ResourcesManager {
 
 	public TiledTextureRegion player_region;
 	public TextureRegion redpill_region;
+	
+	public Sound player_eat;
+	public Sound player_barf;
 
 	public BaseGameActivity activity;
 	public Engine engine;
@@ -58,8 +65,24 @@ public class ResourcesManager {
     public void loadGameResources()
     {
     	loadGameGraphics();
+    	loadGameSounds();
     }
 
+
+	private void loadGameSounds() {
+		// TODO Auto-generated method stub
+		
+		SoundFactory.setAssetBasePath("sfx/");
+		try {
+			player_eat = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "eat.wav");
+			player_barf = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "barf.wav");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
 
 	private void loadGameFonts() {
 		// TODO Auto-generated method stub

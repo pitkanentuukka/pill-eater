@@ -1,5 +1,7 @@
 package com.tuukka.fromscratch;
 
+import java.util.Random;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.TiledSprite;
@@ -39,13 +41,18 @@ public class Player extends AnimatedSprite {
 		/*this.setCurrentTileIndex(2);
 		this.animate(2000, false);*/
 		long durations[] = new long[2];
-		durations[0] = (long) 300;
-		durations[1] = (long) 400;
+		durations[0] = (long) 200;
+		durations[1] = (long) 300;
 		int[] pFrames = new int[2];
 		pFrames[0] = 1;
 		pFrames[1] = 0;
 		
-		this.animate(durations, pFrames, 3);
+		this.animate(durations, pFrames, 6);
+		ResourcesManager.getInstance().player_eat.play();
+		Random randomgen = new Random();
+		if (randomgen.nextInt() % 6 == 0) {
+			ResourcesManager.getInstance().player_barf.play();
+		}
 		
 	}
 }
