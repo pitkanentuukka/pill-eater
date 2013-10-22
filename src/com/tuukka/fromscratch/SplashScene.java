@@ -8,11 +8,18 @@ import com.tuukka.fromscratch.SceneManager.SceneType;
 
 public class SplashScene extends BaseScene {
 
+	private Text text;
+
 	@Override
 	public void createScene() {
+		this.CAMERA_HEIGHT = 480;
+		this.CAMERA_WIDTH = 800;
 		// TODO Auto-generated method stub
 		setBackground(new Background(Color.WHITE));
-	    attachChild(new Text(400, 240, resourcesManager.font, "Loading...", vbom));
+		text = new Text(0,0, ResourcesManager.getInstance().font,"loading", vbom);
+	    //attachChild(new Text(400, 240, resourcesManager.font, "Loading...", vbom));
+		this.attachChild(text);
+		text.setPosition(CAMERA_WIDTH/2-(text.getWidth()), CAMERA_HEIGHT/2-(text.getHeight()));
 
 	}
 

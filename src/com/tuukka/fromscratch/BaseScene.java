@@ -16,6 +16,8 @@ public abstract class BaseScene extends Scene {
     protected VertexBufferObjectManager vbom;
     protected Camera camera;
     
+	protected float CAMERA_WIDTH;
+	protected float CAMERA_HEIGHT;
 
     public BaseScene()
     {

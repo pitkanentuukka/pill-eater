@@ -88,10 +88,10 @@ public class ResourcesManager {
 		// TODO Auto-generated method stub
 
 		FontFactory.setAssetBasePath("font/");
-		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
 
 		//font = FontFactory.createFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50, true, Color.WHITE, 2, Color.BLACK);
-		font = FontFactory.createFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50, true, 2 );
+		font = FontFactory.createFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 32, true, 100);
 		font.load();
 		
 	}
@@ -150,8 +150,8 @@ public class ResourcesManager {
 
 	public void loadSplashScreen() {
 		// TODO Auto-generated method stub
-		
     	loadGameFonts();
+		
 	}
 	
 }

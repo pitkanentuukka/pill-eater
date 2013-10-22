@@ -48,8 +48,6 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private Pill redpill;
 	private Body player_body;
 	private Body redpill_body;
-	private float CAMERA_WIDTH;
-	private float CAMERA_HEIGHT;
 	
 	private List<Task> taskList;
 	
@@ -164,6 +162,9 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private void createHUD() {
 		gameHUD = new HUD();
 		gameHUD.setColor(Color.BLACK);
+		/*gameHUD.setX(50);
+		gameHUD.setY(50);*/
+		gameHUD.setPosition(100, 100);
 		scoreText = new Text(20, 420, resourcesManager.font, "score:0123456789", 
 				new TextOptions(HorizontalAlign.LEFT), vbom);
 
