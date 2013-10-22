@@ -67,4 +67,18 @@ public class Player extends AnimatedSprite {
 		}
 		
 	}
+
+	public void hitWall() {
+		// TODO Auto-generated method stub
+		long durations[] = new long[2];
+		durations[0] = 400;
+		durations[1] = 100;
+		int[] pFrames = new int[2];
+		pFrames[0] = 2;
+		pFrames[1] = 0;
+		this.stopAnimation();
+		this.animate(durations, pFrames, 0);
+		ResourcesManager.getInstance().player_eat.stop();
+		ResourcesManager.getInstance().player_hitwall.play();
+	}
 }

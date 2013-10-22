@@ -34,7 +34,7 @@ public class ResourcesManager {
 	
 	public Sound player_eat;
 	public Sound player_barf;
-
+	public Sound player_hitwall;
 	public BaseGameActivity activity;
 	public Engine engine;
 	public Camera camera;
@@ -76,6 +76,7 @@ public class ResourcesManager {
 		try {
 			player_eat = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "eat.wav");
 			player_barf = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "barf.wav");
+			player_hitwall = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "player_hitwall2.wav");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,21 +98,11 @@ public class ResourcesManager {
 	}
 
 
-    /*private void loadGameGraphics()
-    {
-    	
-    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-   	    gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
-   	    //player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "pacman.png", 2, 1);
-   	    player_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "player_grin.png");
-   	    redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
-   	   
-    }*/
 	private void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		//BitmapTextureAtlas mBitmapTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 167, 128);
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
-		this.player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player_tiled.png", 2, 1); 
+		this.player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player_tiled_2.png", 3, 1); 
 		this.redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
 		
 		try {

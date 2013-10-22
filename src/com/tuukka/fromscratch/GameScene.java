@@ -50,6 +50,10 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private Body redpill_body;
 	
 	private List<Task> taskList;
+	private Body groundbody;
+	private Body roofbody;
+	private Body leftwallbody;
+	private Body rightwallbody;
 	
 	public void createScene() {
 		
@@ -108,10 +112,15 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 
 		// final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
 		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0.0f, 0.0f, 1.5f);
-		PhysicsFactory.createBoxBody(this.physicsWorld, ground, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.physicsWorld, roof, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.physicsWorld, left, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.physicsWorld, right, BodyType.StaticBody, wallFixtureDef);
+		groundbody = PhysicsFactory.createBoxBody(this.physicsWorld, ground, BodyType.StaticBody, wallFixtureDef);
+		roofbody = PhysicsFactory.createBoxBody(this.physicsWorld, roof, BodyType.StaticBody, wallFixtureDef);
+		leftwallbody = PhysicsFactory.createBoxBody(this.physicsWorld, left, BodyType.StaticBody, wallFixtureDef);
+		rightwallbody = PhysicsFactory.createBoxBody(this.physicsWorld, right, BodyType.StaticBody, wallFixtureDef);
+		
+		groundbody.setUserData("wall");
+		roofbody.setUserData("wall");
+		rightwallbody.setUserData("wall");
+		leftwallbody.setUserData("wall");
 
 		this.attachChild(ground);
 		this.attachChild(roof);
@@ -215,9 +224,16 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	            	playerEatsAPill();
 	            	
 	            }
+	            if (x1.getBody().getUserData() == "wall" && x2.getBody().getUserData() == "player") {
+	            	playerHitsWall();
+	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() == "wall") {
+	            	playerHitsWall();
+	            	
+	            }
 	
 			
 			}
+
 			public void endContact(Contact contact) {
 				
 				
@@ -277,5 +293,9 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         this.scoreText.setText("score: " + score);
         
         player.eat();
+	}		
+	private void playerHitsWall() {
+				// TODO Auto-generated method stub
+		player.hitWall();
 	}
 }
