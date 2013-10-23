@@ -42,6 +42,7 @@ import com.tuukka.fromscratch.SceneManager.SceneType;
 public class GameScene extends BaseScene implements IAccelerationListener{
 	private HUD gameHUD;
 	private Text scoreText;
+	private Text healthText;
 	private int score = 0;
 	private PhysicsWorld physicsWorld;
 	private Player player;
@@ -182,6 +183,15 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		scoreText.setPosition(scoreText.getWidth()/2, scoreText.getHeight()/2);
 		gameHUD.attachChild(scoreText);
 
+		healthText = new Text(20, 420, resourcesManager.font, "hit:0123", 
+				new TextOptions(HorizontalAlign.LEFT), vbom);
+		healthText.setText("hit:0");
+		healthText.setScale(2);
+		float width = healthText.getWidth();
+		healthText.setPosition(CAMERA_WIDTH - healthText.getWidth()/2, healthText.getHeight()/2);
+		gameHUD.attachChild(healthText);
+		
+
 		camera.setHUD(gameHUD);
 		
 	}
@@ -226,12 +236,6 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	            	playerEatsAPill();
 	            	
 	            }
-	            if (x1.getBody().getUserData() == "wall" && x2.getBody().getUserData() == "player") {
-	            	playerHitsWall();
-	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() == "wall") {
-	            	playerHitsWall();
-	            	
-	            }
 	
 			
 			}
@@ -250,7 +254,17 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 
 			@Override
 			public void postSolve(Contact contact, ContactImpulse impulse) {
+	            final Fixture x1 = contact.getFixtureA();
+	            final Fixture x2 = contact.getFixtureB();
 				// TODO Auto-generated method stub
+	            if (x1.getBody().getUserData() == "wall" && x2.getBody().getUserData() == "player") {
+	            	float firsthit = impulse.getNormalImpulses()[0];
+	            	playerHitsWall(firsthit);
+	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() == "wall") {
+	            	float firsthit = impulse.getNormalImpulses()[0];
+	            	playerHitsWall(firsthit);
+	            	
+	            }
 				
 			}
 		};
@@ -296,8 +310,10 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         
         player.eat();
 	}		
-	private void playerHitsWall() {
+	private void playerHitsWall(float firsthit) {
 				// TODO Auto-generated method stub
 		player.hitWall();
+		String hitstring = String.valueOf(firsthit);
+		this.healthText.setText("hit: " + hitstring);
 	}
 }
