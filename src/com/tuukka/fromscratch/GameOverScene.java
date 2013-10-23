@@ -1,12 +1,15 @@
 package com.tuukka.fromscratch;
 
+import org.andengine.entity.scene.IOnSceneTouchListener;
+import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.text.Text;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.adt.color.Color;
 
 import com.tuukka.fromscratch.SceneManager.SceneType;
 
-public class GameOverScene extends BaseScene {
+public class GameOverScene extends BaseScene implements IOnSceneTouchListener {
 
 	private Text text;
 
@@ -26,6 +29,7 @@ public class GameOverScene extends BaseScene {
 		this.attachChild(text);
 		//text.setPosition(CAMERA_WIDTH/2-(text.getWidth()), CAMERA_HEIGHT/2-(text.getHeight()));
 		text.setPosition(CAMERA_WIDTH/2, CAMERA_HEIGHT/2);
+		setOnSceneTouchListener(this);
 
 	}
 
@@ -38,13 +42,21 @@ public class GameOverScene extends BaseScene {
 	@Override
 	public SceneType getSceneType() {
 		// TODO Auto-generated method stub
-		return null;
+		return SceneManager.SceneType.SCENE_GAMEOVER;
 	}
 
 	@Override
 	public void disposeScene() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+		// TODO Auto-generated method stub
+		this.disposeScene();
+		SceneManager.getInstance().createGameScene();
+		return true;
 	}
 
 }

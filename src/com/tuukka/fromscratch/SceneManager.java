@@ -60,6 +60,7 @@ public class SceneManager {
 	}
 	public void createOverGameScene() {
 		// TODO Auto-generated method stub
+		gameScene.disposeScene();
 		gameOverScene = new GameOverScene();
 		currentScene = gameOverScene;
 		setScene(gameOverScene);
