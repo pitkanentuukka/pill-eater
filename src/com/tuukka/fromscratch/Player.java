@@ -24,6 +24,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class Player extends AnimatedSprite {
 	
 	private Body body;
+	private float health;
 	
 	public Player(float pX, float pY, VertexBufferObjectManager vbom, Camera camera, PhysicsWorld physicsWorld)
     {
@@ -35,6 +36,7 @@ public class Player extends AnimatedSprite {
 	public Player(float x, float y, TiledTextureRegion player_region,
 			VertexBufferObjectManager vbom) {
 		super(x, y, player_region, vbom);
+		this.health = 300f;
 	}
 
 	private void createPhysics(final Camera camera, PhysicsWorld physicsWorld)
@@ -68,17 +70,21 @@ public class Player extends AnimatedSprite {
 		
 	}
 
-	public void hitWall() {
+	public int hitWall(float impact) {
 		// TODO Auto-generated method stub
-		long durations[] = new long[2];
-		durations[0] = 400;
-		durations[1] = 100;
-		int[] pFrames = new int[2];
-		pFrames[0] = 2;
-		pFrames[1] = 0;
-		this.stopAnimation();
-		this.animate(durations, pFrames, 0);
-		ResourcesManager.getInstance().player_eat.stop();
-		ResourcesManager.getInstance().player_hitwall.play();
+		if (impact > 20.0f) {
+			long durations[] = new long[2];
+			durations[0] = 400;
+			durations[1] = 100;
+			int[] pFrames = new int[2];
+			pFrames[0] = 2;
+			pFrames[1] = 0;
+			this.stopAnimation();
+			this.animate(durations, pFrames, 0);
+			ResourcesManager.getInstance().player_eat.stop();
+			ResourcesManager.getInstance().player_hitwall.play();
+			this.health -= impact;
+		}
+		return (int)this.health;
 	}
 }
