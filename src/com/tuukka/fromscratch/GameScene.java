@@ -173,11 +173,13 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		gameHUD.setColor(Color.BLACK);
 		/*gameHUD.setX(50);
 		gameHUD.setY(50);*/
-		gameHUD.setPosition(100, 100);
+		gameHUD.setPosition(80, 40);
 		scoreText = new Text(20, 420, resourcesManager.font, "score:0123456789", 
 				new TextOptions(HorizontalAlign.LEFT), vbom);
 
 		scoreText.setText("score: 0");
+		scoreText.setScale(2);
+		scoreText.setPosition(scoreText.getWidth()/2, scoreText.getHeight()/2);
 		gameHUD.attachChild(scoreText);
 
 		camera.setHUD(gameHUD);
