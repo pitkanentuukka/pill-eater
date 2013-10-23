@@ -36,7 +36,7 @@ public class Player extends AnimatedSprite {
 	public Player(float x, float y, TiledTextureRegion player_region,
 			VertexBufferObjectManager vbom) {
 		super(x, y, player_region, vbom);
-		this.health = 300f;
+		this.health = 100f;
 	}
 
 	private void createPhysics(final Camera camera, PhysicsWorld physicsWorld)
@@ -58,6 +58,8 @@ public class Player extends AnimatedSprite {
 		pFrames[1] = 0;
 		Vibrator v = (Vibrator) ResourcesManager.getInstance().activity.getSystemService("VIBRATOR");
 		this.animate(durations, pFrames, 6);
+		ResourcesManager.getInstance().player_barf.stop();
+		ResourcesManager.getInstance().player_eat.stop();
 		ResourcesManager.getInstance().player_eat.play();
 		Random randomgen = new Random();
 		if (randomgen.nextInt() % 6== 0) {
@@ -83,7 +85,7 @@ public class Player extends AnimatedSprite {
 			this.animate(durations, pFrames, 0);
 			ResourcesManager.getInstance().player_eat.stop();
 			ResourcesManager.getInstance().player_hitwall.play();
-			this.health -= impact;
+			this.health -= impact/4;
 		}
 		return (int)this.health;
 	}

@@ -15,6 +15,7 @@ public class SceneManager {
 	private BaseScene loadingScene;
 	private BaseScene gameScene;
 	private BaseScene splashScene;
+	private BaseScene gameOverScene;
 	
     private BaseScene currentScene;
 
@@ -24,6 +25,7 @@ public class SceneManager {
 		SCENE_LOADING,
 		SCENE_GAME,
 		SCENE_SPLASH,
+		SCENE_GAMEOVER,
 	}
 	
 	private SceneManager() {
@@ -56,7 +58,13 @@ public class SceneManager {
 		setScene(gameScene);
 		currentSceneType = currentScene.getSceneType();
 	}
-
+	public void createOverGameScene() {
+		// TODO Auto-generated method stub
+		gameOverScene = new GameOverScene();
+		currentScene = gameOverScene;
+		setScene(gameOverScene);
+		currentSceneType = currentScene.getSceneType();
+	}
 	public BaseScene getCurrentScene() {
 		return currentScene;
 	}

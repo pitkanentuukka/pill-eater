@@ -185,7 +185,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 
 		healthText = new Text(20, 420, resourcesManager.font, "health:0123456789", 
 				new TextOptions(HorizontalAlign.LEFT), vbom);
-		healthText.setText("health:300");
+		healthText.setText("health:100");
 		healthText.setScale(2);
 		healthText.setPosition( healthText.getWidth()/2, scoreText.getHeight() +healthText.getHeight()/2);
 		gameHUD.attachChild(healthText);
@@ -311,6 +311,11 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	}		
 	private void playerHitsWall(float firsthit) {
 				// TODO Auto-generated method stub
-		this.healthText.setText("health: " + player.hitWall(firsthit));
+		int health = player.hitWall(firsthit);
+		if (health > 0) {
+		this.healthText.setText("health: " +health );
+		} else {
+			SceneManager.getInstance().createOverGameScene();
+		}
 	}
 }
