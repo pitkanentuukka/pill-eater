@@ -35,6 +35,7 @@ public class ResourcesManager {
 	public Sound player_eat;
 	public Sound player_barf;
 	public Sound player_hitwall;
+	public Sound player_die;
 	public BaseGameActivity activity;
 	public Engine engine;
 	public Camera camera;
@@ -77,6 +78,7 @@ public class ResourcesManager {
 			player_eat = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "eat.wav");
 			player_barf = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "barf.wav");
 			player_hitwall = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "player_hitwall2.wav");
+			player_die = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "die2.wav");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

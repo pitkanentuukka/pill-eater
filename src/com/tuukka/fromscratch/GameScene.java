@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -315,7 +317,19 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		if (health > 0) {
 		this.healthText.setText("health: " +health );
 		} else {
-			SceneManager.getInstance().createOverGameScene();
+			gameOver();
 		}
+	}
+	
+	private void gameOver() {
+		TimerHandler gameOverTimeHandler;
+		ResourcesManager.getInstance().engine.registerUpdateHandler(gameOverTimeHandler = new TimerHandler(3, new ITimerCallback(){
+			public void onTimePassed(final TimerHandler pTimerHandler) {
+				disposeScene();
+				SceneManager.getInstance().createOverGameScene();
+				
+			}
+		}));
+		
 	}
 }

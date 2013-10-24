@@ -73,7 +73,6 @@ public class Player extends AnimatedSprite {
 	}
 
 	public int hitWall(float impact) {
-		// TODO Auto-generated method stub
 		if (impact > 20.0f) {
 			long durations[] = new long[2];
 			durations[0] = 400;
@@ -84,9 +83,32 @@ public class Player extends AnimatedSprite {
 			this.stopAnimation();
 			this.animate(durations, pFrames, 0);
 			ResourcesManager.getInstance().player_eat.stop();
-			ResourcesManager.getInstance().player_hitwall.play();
 			this.health -= impact/4;
 		}
+		if (health < 0) {
+			health = 0;
+			this.die();
+		} else {
+			ResourcesManager.getInstance().player_hitwall.play();
+		}
 		return (int)this.health;
+	}
+
+	private void die() {
+		ResourcesManager.getInstance().player_barf.stop();
+		ResourcesManager.getInstance().player_eat.stop();
+		// sweet sound of dying
+		ResourcesManager.getInstance().player_die.play();
+		// animation
+		long durations[] = new long[3];
+		durations[0] = (long) 300;
+		durations[1] = (long) 300;
+		durations[2] = (long) 300;
+		int[] pFrames = new int[3];
+		pFrames[0] = 3;
+		pFrames[1] = 4;
+		pFrames[2] = 5;
+		this.animate(durations, pFrames, 0);
+
 	}
 }
