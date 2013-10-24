@@ -75,10 +75,10 @@ public class ResourcesManager {
 		
 		SoundFactory.setAssetBasePath("sfx/");
 		try {
-			player_eat = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "eat.wav");
+			player_eat = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "eat3.wav");
 			player_barf = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "barf.wav");
 			player_hitwall = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "player_hitwall2.wav");
-			player_die = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "die2.wav");
+			player_die = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "die3.wav");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

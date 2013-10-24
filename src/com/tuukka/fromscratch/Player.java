@@ -51,13 +51,13 @@ public class Player extends AnimatedSprite {
 		/*this.setCurrentTileIndex(2);
 		this.animate(2000, false);*/
 		long durations[] = new long[2];
-		durations[0] = (long) 200;
-		durations[1] = (long) 300;
+		durations[0] = (long) 80;
+		durations[1] = (long) 160;
 		int[] pFrames = new int[2];
 		pFrames[0] = 1;
 		pFrames[1] = 0;
 		Vibrator v = (Vibrator) ResourcesManager.getInstance().activity.getSystemService("VIBRATOR");
-		this.animate(durations, pFrames, 6);
+		this.animate(durations, pFrames, 5);
 		ResourcesManager.getInstance().player_barf.stop();
 		ResourcesManager.getInstance().player_eat.stop();
 		ResourcesManager.getInstance().player_eat.play();
