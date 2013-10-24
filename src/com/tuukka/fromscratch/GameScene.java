@@ -8,26 +8,19 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
-import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.util.Vector2Pool;
-import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
 import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
 
-
-import android.hardware.SensorManager;
-import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -322,6 +315,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	}
 	
 	private void gameOver() {
+		player_body.setType(BodyType.StaticBody);
 		TimerHandler gameOverTimeHandler;
 		ResourcesManager.getInstance().engine.registerUpdateHandler(gameOverTimeHandler = new TimerHandler(3, new ITimerCallback(){
 			public void onTimePassed(final TimerHandler pTimerHandler) {

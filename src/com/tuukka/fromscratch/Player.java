@@ -84,12 +84,12 @@ public class Player extends AnimatedSprite {
 			this.animate(durations, pFrames, 0);
 			ResourcesManager.getInstance().player_eat.stop();
 			this.health -= impact/4;
-		}
-		if (health < 0) {
-			health = 0;
-			this.die();
-		} else {
-			ResourcesManager.getInstance().player_hitwall.play();
+			if (health < 0) {
+				health = 0;
+				this.die();
+			} else {
+				ResourcesManager.getInstance().player_hitwall.play();
+			}
 		}
 		return (int)this.health;
 	}
