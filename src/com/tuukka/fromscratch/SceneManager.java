@@ -15,6 +15,7 @@ public class SceneManager {
 	private BaseScene loadingScene;
 	private BaseScene gameScene;
 	private BaseScene splashScene;
+	private BaseScene menuScene;
 	private BaseScene gameOverScene;
 	
     private BaseScene currentScene;
@@ -23,6 +24,7 @@ public class SceneManager {
 
 	public enum SceneType {
 		SCENE_LOADING,
+		SCENE_MENU,
 		SCENE_GAME,
 		SCENE_SPLASH,
 		SCENE_GAMEOVER,
