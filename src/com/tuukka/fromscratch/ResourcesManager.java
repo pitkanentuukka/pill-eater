@@ -71,8 +71,6 @@ public class ResourcesManager {
     	loadGameSounds();
     }
 
-
-
 	private void loadGameSounds() {
 		// TODO Auto-generated method stub
 		

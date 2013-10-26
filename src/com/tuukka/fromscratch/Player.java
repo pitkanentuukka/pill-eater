@@ -5,6 +5,7 @@ import java.util.Random;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.TiledSprite;
+import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
@@ -17,6 +18,7 @@ import android.os.Build;
 import android.os.Vibrator;
 
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -25,17 +27,19 @@ public class Player extends AnimatedSprite {
 	
 	private Body body;
 	private float health;
+	private PhysicsWorld physworld; // do we need this?
+	private FixtureDef playerFixtureDef;
 	
-	public Player(float pX, float pY, VertexBufferObjectManager vbom, Camera camera, PhysicsWorld physicsWorld)
-    {
-        super(pX, pY, ResourcesManager.getInstance().player_region, vbom);
-        //createPhysics(camera, physicsWorld);
-        camera.setChaseEntity(this);
-    }
 
 	public Player(float x, float y, TiledTextureRegion player_region,
-			VertexBufferObjectManager vbom) {
+			VertexBufferObjectManager vbom, PhysicsWorld physicsWorld) {
 		super(x, y, player_region, vbom);
+
+	    playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 1.0f); // get these parameters from optionsmanager or somesuch
+	    body = PhysicsFactory.createCircleBody(physicsWorld, this, BodyType.DynamicBody, playerFixtureDef);
+	    physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body, true, true));
+	    body.setUserData("player");
+	    this.setUserData("player");
 		this.health = 100f;
 	}
 
@@ -95,6 +99,7 @@ public class Player extends AnimatedSprite {
 	}
 
 	private void die() {
+		this.body.setType(BodyType.StaticBody);
 		ResourcesManager.getInstance().player_barf.stop();
 		ResourcesManager.getInstance().player_eat.stop();
 		// sweet sound of dying
