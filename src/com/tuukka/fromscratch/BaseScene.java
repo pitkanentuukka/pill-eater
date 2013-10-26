@@ -13,6 +13,7 @@ public abstract class BaseScene extends Scene {
     protected Engine engine;
     protected Activity activity;
     protected ResourcesManager resourcesManager;
+    protected SceneManager sceneManager;
     protected VertexBufferObjectManager vbom;
     protected Camera camera;
     
@@ -21,6 +22,7 @@ public abstract class BaseScene extends Scene {
 
     public BaseScene()
     {
+        this.sceneManager = SceneManager.getInstance();
         this.resourcesManager = ResourcesManager.getInstance();
         this.engine = resourcesManager.engine;
         this.activity = resourcesManager.activity;

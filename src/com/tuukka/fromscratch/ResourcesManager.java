@@ -45,6 +45,8 @@ public class ResourcesManager {
     // textures
     
 	public BuildableBitmapTextureAtlas gameTextureAtlas;
+
+	public TextureRegion menu_background_region;
     
 	private ResourcesManager() {
 		// private constructor

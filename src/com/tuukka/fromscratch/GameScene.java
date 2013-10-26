@@ -53,16 +53,16 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	
 	public void createScene() {
 		
-		ResourcesManager.getInstance().loadGameResources();
+		resourcesManager.loadGameResources();
 		
 		createBackground();
 		createHUD();
 	    createPhysics();
 	    
-	    ResourcesManager.getInstance().engine.enableAccelerationSensor(activity, this);
+	    resourcesManager.engine.enableAccelerationSensor(activity, this);
 	    
-	    CAMERA_WIDTH = ResourcesManager.getInstance().camera.getXMax();
-	    CAMERA_HEIGHT = ResourcesManager.getInstance().camera.getYMax();
+	    CAMERA_WIDTH = resourcesManager.camera.getXMax();
+	    CAMERA_HEIGHT = resourcesManager.camera.getYMax();
 	    
 	    createPlayer();
 	    
@@ -129,7 +129,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         // create pill
         float redpillY = (float) (Math.random() * CAMERA_HEIGHT);
         float redpillX = (float) (Math.random() * CAMERA_WIDTH);
-        redpill = new Pill(redpillX, redpillY, ResourcesManager.getInstance().redpill_region, vbom);
+        redpill = new Pill(redpillX, redpillY, resourcesManager.redpill_region, vbom);
 	    final FixtureDef redpillFixtureDef = PhysicsFactory.createFixtureDef(0, 0.0f, 0.0f);
         redpill_body = PhysicsFactory.createCircleBody(this.physicsWorld, redpill, BodyType.StaticBody, redpillFixtureDef);
         redpill_body.setUserData("redpill");
@@ -144,7 +144,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 
 	private void createPlayer() {
 	    // create player
-	    player = new Player((ResourcesManager.getInstance().camera.getXMax()/2), (ResourcesManager.getInstance().camera.getYMax()/2), resourcesManager.player_region, vbom);
+	    player = new Player((resourcesManager.camera.getXMax()/2), (resourcesManager.camera.getYMax()/2), resourcesManager.player_region, vbom);
 	    final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 1.0f);
 	    player.setUserData("player");
         this.attachChild(player);
@@ -317,10 +317,10 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private void gameOver() {
 		player_body.setType(BodyType.StaticBody);
 		TimerHandler gameOverTimeHandler;
-		ResourcesManager.getInstance().engine.registerUpdateHandler(gameOverTimeHandler = new TimerHandler(3, new ITimerCallback(){
+		resourcesManager.engine.registerUpdateHandler(gameOverTimeHandler = new TimerHandler(3, new ITimerCallback(){
 			public void onTimePassed(final TimerHandler pTimerHandler) {
 				disposeScene();
-				SceneManager.getInstance().createOverGameScene();
+				sceneManager.createOverGameScene();
 				
 			}
 		}));

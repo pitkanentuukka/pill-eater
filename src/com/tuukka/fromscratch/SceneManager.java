@@ -58,7 +58,6 @@ public class SceneManager {
 		gameScene = new GameScene();
 		currentScene = gameScene;
 		setScene(gameScene);
-		currentSceneType = currentScene.getSceneType();
 	}
 	public void createOverGameScene() {
 		// TODO Auto-generated method stub
@@ -66,7 +65,6 @@ public class SceneManager {
 		gameOverScene = new GameOverScene();
 		currentScene = gameOverScene;
 		setScene(gameOverScene);
-		currentSceneType = currentScene.getSceneType();
 	}
 	public BaseScene getCurrentScene() {
 		return currentScene;
@@ -84,6 +82,13 @@ public class SceneManager {
 		currentScene = splashScene;
 		pOnCreateSceneCallback.onCreateSceneFinished(splashScene);
 
+	}
+
+	public void createMenuScene() {
+		// TODO Auto-generated method stub
+		menuScene = new MenuScene();
+		currentScene = menuScene;
+		setScene(currentScene);
 	}
 
 }

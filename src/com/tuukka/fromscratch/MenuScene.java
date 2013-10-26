@@ -2,7 +2,10 @@ package com.tuukka.fromscratch;
 
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.util.GLState;
 
+import org.andengine.engine.camera.Camera;
 import com.tuukka.fromscratch.SceneManager.SceneType;
 
 public class MenuScene extends BaseScene implements IOnMenuItemClickListener {
@@ -40,7 +43,7 @@ public class MenuScene extends BaseScene implements IOnMenuItemClickListener {
 		switch(pMenuItem.getID())
 		{
 			case MENU_PLAY:
-				SceneManager.getInstance().createGameScene();
+				sceneManager.createGameScene();
 				return true;
 			case MENU_OPTIONS:
 				// show options!
@@ -50,5 +53,19 @@ public class MenuScene extends BaseScene implements IOnMenuItemClickListener {
 				return false;
 		}
 	}
+
+	private void createBackground()
+	{
+	    attachChild(new Sprite(400, 240, resourcesManager.menu_background_region, vbom)
+	    {
+	        @Override
+	        protected void preDraw(GLState pGLState, Camera pCamera) 
+	        {
+	            super.preDraw(pGLState, pCamera);
+	            pGLState.enableDither();
+	        }
+	    });
+	}
+	
 
 }

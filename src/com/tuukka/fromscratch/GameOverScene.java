@@ -21,7 +21,7 @@ public class GameOverScene extends BaseScene implements IOnSceneTouchListener {
 		this.CAMERA_WIDTH = 800;
 		// TODO Auto-generated method stub
 		setBackground(new Background(Color.BLACK));
-		text = new Text(0,0, ResourcesManager.getInstance().font,"Game \nOver!", vbom);
+		text = new Text(0,0, resourcesManager.font,"Game \nOver!", vbom);
 		text.setScale(6.0f);
 		//text.setSize(500, 300);
 		
@@ -55,7 +55,7 @@ public class GameOverScene extends BaseScene implements IOnSceneTouchListener {
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		// TODO Auto-generated method stub
 		this.disposeScene();
-		SceneManager.getInstance().createGameScene();
+		sceneManager.createGameScene();
 		return true;
 	}
 

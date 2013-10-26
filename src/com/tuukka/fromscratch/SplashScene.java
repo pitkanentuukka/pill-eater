@@ -16,7 +16,7 @@ public class SplashScene extends BaseScene {
 		this.CAMERA_WIDTH = 800;
 		// TODO Auto-generated method stub
 		setBackground(new Background(Color.BLACK));
-		text = new Text(0,0, ResourcesManager.getInstance().font,"loading", vbom);
+		text = new Text(0,0, resourcesManager.font,"loading", vbom);
 		text.setScale(7.5f);
 		//text.setSize(500, 300);
 		
