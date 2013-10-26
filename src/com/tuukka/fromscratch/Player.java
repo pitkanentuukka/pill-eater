@@ -30,12 +30,17 @@ public class Player extends AnimatedSprite {
 	private PhysicsWorld physworld; // do we need this?
 	private FixtureDef playerFixtureDef;
 	
+	private GameManager gameManager;
+	
 
 	public Player(float x, float y, TiledTextureRegion player_region,
 			VertexBufferObjectManager vbom, PhysicsWorld physicsWorld) {
 		super(x, y, player_region, vbom);
 
-	    playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 1.0f); // get these parameters from optionsmanager or somesuch
+		gameManager = GameManager.getInstance();
+	    //playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 1.0f); // get these parameters from optionsmanager or somesuch
+	    playerFixtureDef = PhysicsFactory.createFixtureDef(gameManager.getPlayerDensity(), 
+	    		gameManager.getPlayerElasticity(), gameManager.getPlayerFriction());
 	    body = PhysicsFactory.createCircleBody(physicsWorld, this, BodyType.DynamicBody, playerFixtureDef);
 	    physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body, true, true));
 	    body.setUserData("player");
@@ -95,6 +100,8 @@ public class Player extends AnimatedSprite {
 				ResourcesManager.getInstance().player_hitwall.play();
 			}
 		}
+		// should hud and player use observer pattern? 
+		// can they ?
 		return (int)this.health;
 	}
 

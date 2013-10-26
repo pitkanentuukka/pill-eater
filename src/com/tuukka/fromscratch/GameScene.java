@@ -145,11 +145,6 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	private void createPlayer() {
 	    // create player
 	    player = new Player((resourcesManager.camera.getXMax()/2), (resourcesManager.camera.getYMax()/2), resourcesManager.player_region, vbom, physicsWorld);
-	    /*final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 1.0f);
-	    player.setUserData("player");
-        player_body = PhysicsFactory.createCircleBody(this.physicsWorld, player, BodyType.DynamicBody, playerFixtureDef);
-        player_body.setUserData("player");
-        this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(player, player_body, true, true));*/
         this.attachChild(player);
 		
 	}
