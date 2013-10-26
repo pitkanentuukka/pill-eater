@@ -2,6 +2,7 @@ package com.tuukka.fromscratch;
 
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
+import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
@@ -12,10 +13,16 @@ public class MenuScene extends BaseScene implements IOnMenuItemClickListener {
 
 	private final int MENU_PLAY = 0;
 	private final int MENU_OPTIONS = 1;
+	private IMenuItem playMenuItem = new TextMenuItem(MENU_PLAY, resourcesManager.font, "play", vbom);
+	private IMenuItem optionsMenuItem = new TextMenuItem(MENU_OPTIONS, resourcesManager.font, "options", vbom);
 	@Override
 	public void createScene() {
 		// TODO Auto-generated method stub
-		
+		createBackground();
+		this.attachChild(playMenuItem);
+		this.attachChild(optionsMenuItem);
+	    playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 10);
+	    optionsMenuItem.setPosition(optionsMenuItem.getX(), optionsMenuItem.getY() - 110);
 	}
 
 	@Override
