@@ -2,6 +2,8 @@ package com.tuukka.fromscratch;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -34,8 +36,8 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.tuukka.fromscratch.SceneManager.SceneType;
 
 
-public class GameScene extends BaseScene implements IAccelerationListener{
-	private HUD gameHUD;
+public class GameScene extends BaseScene implements IAccelerationListener, Observer{
+	private MyHud gameHUD;
 	private Text scoreText;
 	private Text healthText;
 	private int score = 0;
@@ -146,6 +148,8 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	    // create player
 	    player = new Player((resourcesManager.camera.getXMax()/2), (resourcesManager.camera.getYMax()/2), resourcesManager.player_region, vbom, physicsWorld);
         this.attachChild(player);
+        player.addObserver(gameHUD);
+        player.addObserver(this);
 		
 	}
 
@@ -160,11 +164,11 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 	}
 
 	private void createHUD() {
-		gameHUD = new HUD();
-		gameHUD.setColor(Color.BLACK);
-		/*gameHUD.setX(50);
+		gameHUD = new MyHud();
+		/*gameHUD.setColor(Color.BLACK);
+		*gameHUD.setX(50);
 		gameHUD.setY(50);*/
-		gameHUD.setPosition(80, 40);
+		/*gameHUD.setPosition(80, 40);
 		scoreText = new Text(20, 420, resourcesManager.font, "score:0123456789", 
 				new TextOptions(HorizontalAlign.LEFT), vbom);
 
@@ -178,7 +182,7 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 		healthText.setText("health:100");
 		healthText.setScale(2);
 		healthText.setPosition( healthText.getWidth()/2, scoreText.getHeight() +healthText.getHeight()/2);
-		gameHUD.attachChild(healthText);
+		gameHUD.attachChild(healthText);*/
 		
 
 		camera.setHUD(gameHUD);
@@ -248,10 +252,10 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 				// TODO Auto-generated method stub
 	            if (x1.getBody().getUserData() == "wall" && x2.getBody().getUserData() == "player") {
 	            	float firsthit = impulse.getNormalImpulses()[0];
-	            	playerHitsWall(firsthit);
+	            	player.hitWall(firsthit);
 	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() == "wall") {
 	            	float firsthit = impulse.getNormalImpulses()[0];
-	            	playerHitsWall(firsthit);
+	            	player.hitWall(firsthit);
 	            	
 	            }
 				
@@ -295,22 +299,16 @@ public class GameScene extends BaseScene implements IAccelerationListener{
         x /=32.0f;
         taskList.add(new MoveBodyTask(redpill_body, x, y));
         this.score++;
-        this.scoreText.setText("score: " + score);
+        /*this.scoreText.setText("score: " + score);*/
         
         player.eat();
 	}		
 	private void playerHitsWall(float firsthit) {
 				// TODO Auto-generated method stub
-		int health = player.hitWall(firsthit);
-		if (health > 0) {
-		this.healthText.setText("health: " +health );
-		} else {
-			gameOver();
-		}
 	}
 	
-	private void gameOver() {
-		this.healthText.setText("health: " +0 );
+	public void gameOver() {
+		//this.healthText.setText("health: " +0 );
 		TimerHandler gameOverTimeHandler;
 		resourcesManager.engine.registerUpdateHandler(gameOverTimeHandler = new TimerHandler(3, new ITimerCallback(){
 			public void onTimePassed(final TimerHandler pTimerHandler) {
@@ -319,6 +317,18 @@ public class GameScene extends BaseScene implements IAccelerationListener{
 				
 			}
 		}));
+		
+	}
+
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		if (arg1 instanceof Float) {
+			if(0 >= ((Float) arg1).compareTo((float)(0))) {
+				this.gameOver();
+			}
+		}
 		
 	}
 }

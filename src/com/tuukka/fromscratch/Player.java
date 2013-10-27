@@ -1,5 +1,7 @@
 package com.tuukka.fromscratch;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import org.andengine.engine.camera.Camera;
@@ -26,9 +28,14 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class Player extends AnimatedSprite {
 	
 	private Body body;
-	private float health;
+	private Float health;
 	private PhysicsWorld physworld; // do we need this?
 	private FixtureDef playerFixtureDef;
+	private DelegatedObservable obs;
+	
+	private ResourcesManager resourcesManager;
+	private SceneManager sceneManager;
+	
 	
 	private GameManager gameManager;
 	
@@ -36,8 +43,11 @@ public class Player extends AnimatedSprite {
 	public Player(float x, float y, TiledTextureRegion player_region,
 			VertexBufferObjectManager vbom, PhysicsWorld physicsWorld) {
 		super(x, y, player_region, vbom);
-
+		
+		resourcesManager = ResourcesManager.getInstance();
+		sceneManager = SceneManager.getInstance();
 		gameManager = GameManager.getInstance();
+
 	    //playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 1.0f); // get these parameters from optionsmanager or somesuch
 	    playerFixtureDef = PhysicsFactory.createFixtureDef(gameManager.getPlayerDensity(), 
 	    		gameManager.getPlayerElasticity(), gameManager.getPlayerFriction());
@@ -46,12 +56,7 @@ public class Player extends AnimatedSprite {
 	    body.setUserData("player");
 	    this.setUserData("player");
 		this.health = 100f;
-	}
-
-	private void createPhysics(final Camera camera, PhysicsWorld physicsWorld)
-	{ 
-	    body = PhysicsFactory.createBoxBody(physicsWorld, this, BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
-		
+		this.obs = new DelegatedObservable();
 	}
 
 	public void eat() {
@@ -65,14 +70,14 @@ public class Player extends AnimatedSprite {
 		int[] pFrames = new int[2];
 		pFrames[0] = 1;
 		pFrames[1] = 0;
-		Vibrator v = (Vibrator) ResourcesManager.getInstance().activity.getSystemService("VIBRATOR");
+		Vibrator v = (Vibrator) resourcesManager.activity.getSystemService("VIBRATOR");
 		this.animate(durations, pFrames, 5);
-		ResourcesManager.getInstance().player_barf.stop();
-		ResourcesManager.getInstance().player_eat.stop();
-		ResourcesManager.getInstance().player_eat.play();
+		resourcesManager.player_barf.stop();
+		resourcesManager.player_eat.stop();
+		resourcesManager.player_eat.play();
 		Random randomgen = new Random();
 		if (randomgen.nextInt() % 6== 0) {
-			ResourcesManager.getInstance().player_barf.play();
+			resourcesManager.player_barf.play();
 			if (v != null) {
 				long[] vibpattern = {2300, 5000};
 				v.vibrate(vibpattern, -1);
@@ -81,7 +86,7 @@ public class Player extends AnimatedSprite {
 		
 	}
 
-	public int hitWall(float impact) {
+	public void hitWall(float impact) {
 		if (impact > 20.0f) {
 			long durations[] = new long[2];
 			durations[0] = 400;
@@ -91,26 +96,29 @@ public class Player extends AnimatedSprite {
 			pFrames[1] = 0;
 			this.stopAnimation();
 			this.animate(durations, pFrames, 0);
-			ResourcesManager.getInstance().player_eat.stop();
+			resourcesManager.player_eat.stop();
 			this.health -= impact/4;
 			if (health < 0) {
-				health = 0;
+				obs.setChanged();
+				health = (float) 0;
+				obs.notifyObservers(health);
 				this.die();
 			} else {
-				ResourcesManager.getInstance().player_hitwall.play();
+				resourcesManager.player_hitwall.play();
+				obs.setChanged();
+				obs.notifyObservers(health);
 			}
 		}
 		// should hud and player use observer pattern? 
 		// can they ?
-		return (int)this.health;
 	}
 
 	private void die() {
 		this.body.setType(BodyType.StaticBody);
-		ResourcesManager.getInstance().player_barf.stop();
-		ResourcesManager.getInstance().player_eat.stop();
+		resourcesManager.player_barf.stop();
+		resourcesManager.player_eat.stop();
 		// sweet sound of dying
-		ResourcesManager.getInstance().player_die.play();
+		resourcesManager.player_die.play();
 		// animation
 		long durations[] = new long[3];
 		durations[0] = (long) 300;
@@ -123,4 +131,12 @@ public class Player extends AnimatedSprite {
 		this.animate(durations, pFrames, 0);
 
 	}
+	
+	public synchronized void addObserver(Observer o) {
+		this.obs.addObserver(o);
+	}
+	public synchronized void deleteObserver(Observer o) {
+		this.obs.deleteObserver(o);
+	}
+
 }
