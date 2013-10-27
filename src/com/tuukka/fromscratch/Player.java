@@ -109,8 +109,6 @@ public class Player extends AnimatedSprite {
 				obs.notifyObservers(health);
 			}
 		}
-		// should hud and player use observer pattern? 
-		// can they ?
 	}
 
 	private void die() {

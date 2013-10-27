@@ -37,7 +37,7 @@ import com.tuukka.fromscratch.SceneManager.SceneType;
 
 
 public class GameScene extends BaseScene implements IAccelerationListener, Observer{
-	private MyHud gameHUD;
+	private HUD gameHUD;
 	private Text scoreText;
 	private Text healthText;
 	private int score = 0;
@@ -148,7 +148,6 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	    // create player
 	    player = new Player((resourcesManager.camera.getXMax()/2), (resourcesManager.camera.getYMax()/2), resourcesManager.player_region, vbom, physicsWorld);
         this.attachChild(player);
-        player.addObserver(gameHUD);
         player.addObserver(this);
 		
 	}
@@ -164,11 +163,11 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	}
 
 	private void createHUD() {
-		gameHUD = new MyHud();
-		/*gameHUD.setColor(Color.BLACK);
-		*gameHUD.setX(50);
+		gameHUD = new HUD();
+		gameHUD.setColor(Color.BLACK);
+		/*gameHUD.setX(50);
 		gameHUD.setY(50);*/
-		/*gameHUD.setPosition(80, 40);
+		gameHUD.setPosition(80, 40);
 		scoreText = new Text(20, 420, resourcesManager.font, "score:0123456789", 
 				new TextOptions(HorizontalAlign.LEFT), vbom);
 
@@ -182,7 +181,7 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 		healthText.setText("health:100");
 		healthText.setScale(2);
 		healthText.setPosition( healthText.getWidth()/2, scoreText.getHeight() +healthText.getHeight()/2);
-		gameHUD.attachChild(healthText);*/
+		gameHUD.attachChild(healthText);
 		
 
 		camera.setHUD(gameHUD);
@@ -299,7 +298,7 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
         x /=32.0f;
         taskList.add(new MoveBodyTask(redpill_body, x, y));
         this.score++;
-        /*this.scoreText.setText("score: " + score);*/
+        this.scoreText.setText("score: " + score);
         
         player.eat();
 	}		
@@ -325,10 +324,11 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
 		if (arg1 instanceof Float) {
+			String health = String.format("%.0f", arg1);
+			this.healthText.setText("health: " + health);
 			if(0 >= ((Float) arg1).compareTo((float)(0))) {
 				this.gameOver();
 			}
 		}
-		
 	}
 }
