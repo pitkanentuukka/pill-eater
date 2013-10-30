@@ -1,5 +1,6 @@
 package com.tuukka.fromscratch;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -29,16 +30,14 @@ public class Player extends AnimatedSprite {
 	
 	private Body body;
 	private Float health;
-	private PhysicsWorld physworld; // do we need this?
 	private FixtureDef playerFixtureDef;
 	private DelegatedObservable obs;
-	
+	//possibly needed when creating bodynodes later
+	private PhysicsWorld physworld; 
 	private ResourcesManager resourcesManager;
 	private SceneManager sceneManager;
-	
-	
 	private GameManager gameManager;
-	
+	private List <BodyNode> bodyNodeList;
 
 	public Player(float x, float y, TiledTextureRegion player_region,
 			VertexBufferObjectManager vbom, PhysicsWorld physicsWorld) {
@@ -48,7 +47,8 @@ public class Player extends AnimatedSprite {
 		sceneManager = SceneManager.getInstance();
 		gameManager = GameManager.getInstance();
 
-	    //playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 1.0f); // get these parameters from optionsmanager or somesuch
+		physworld = physicsWorld;
+
 	    playerFixtureDef = PhysicsFactory.createFixtureDef(gameManager.getPlayerDensity(), 
 	    		gameManager.getPlayerElasticity(), gameManager.getPlayerFriction());
 	    body = PhysicsFactory.createCircleBody(physicsWorld, this, BodyType.DynamicBody, playerFixtureDef);
@@ -60,10 +60,7 @@ public class Player extends AnimatedSprite {
 	}
 
 	public void eat() {
-		// TODO Auto-generated method stub
-		//this.setCurrentTileIndex(1);
-		/*this.setCurrentTileIndex(2);
-		this.animate(2000, false);*/
+		addBodyNode();
 		long durations[] = new long[2];
 		durations[0] = (long) 80;
 		durations[1] = (long) 160;
@@ -83,6 +80,10 @@ public class Player extends AnimatedSprite {
 				v.vibrate(vibpattern, -1);
 			}
 		}
+		
+	}
+
+	private void addBodyNode() {
 		
 	}
 
