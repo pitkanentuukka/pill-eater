@@ -37,7 +37,8 @@ public class Player extends AnimatedSprite {
 	private ResourcesManager resourcesManager;
 	private SceneManager sceneManager;
 	private GameManager gameManager;
-	private List <BodyNode> bodyNodeList;
+	private BodyNode bodyNode;
+	//private List <BodyNode> bodyNodeList;
 
 	public Player(float x, float y, TiledTextureRegion player_region,
 			VertexBufferObjectManager vbom, PhysicsWorld physicsWorld) {
@@ -84,6 +85,15 @@ public class Player extends AnimatedSprite {
 	}
 
 	private void addBodyNode() {
+		this.bodyNode = new BodyNode(this.getX(), this.getY(), this.getWidth(), this.getHeight(), 
+				resourcesManager.player_body_region, resourcesManager.vbom, this.physworld);
+		this.attachChild(this.bodyNode);
+		//this.bodyNode.setPosition(this.getX(), this.getY());
+		bodyNode.initialize(this.body, this.physworld );
+		//this.bodyNode.setZIndex(-1);
+		//bodyNode.initialize(this.body, this.body.getWorldCenter() );
+		
+		
 		
 	}
 
