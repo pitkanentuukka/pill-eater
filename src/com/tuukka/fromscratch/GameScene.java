@@ -81,15 +81,12 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 
 			@Override
 	        public void onUpdate(float pSecondsElapsed) {
-	            if(!taskList.isEmpty())
-	            {
-	                for(int i = 0; i < taskList.size(); i++)
-	                {
+	            if(!taskList.isEmpty()) {
+	                for(int i = 0; i < taskList.size(); i++) {
 	                    ((Task) taskList.get(i)).run();
 	                }
 	                taskList.clear();
 	            }
-
 	        }
 
 	        public void reset() {

@@ -55,6 +55,7 @@ public class GameOverScene extends BaseScene implements IOnSceneTouchListener {
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		// TODO Auto-generated method stub
 		this.disposeScene();
+        //sceneManager.createMenuScene();
 		sceneManager.createGameScene();
 		return true;
 	}

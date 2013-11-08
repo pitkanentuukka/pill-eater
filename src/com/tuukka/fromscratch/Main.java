@@ -27,6 +27,9 @@ public class Main extends BaseGameActivity {
 	private Camera camera;
 	private BaseScene scene; 
 	private BitmapTextureAtlas texture;
+	private SceneManager sceneManager;
+	private ResourcesManager resourcesManager;
+	
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -64,6 +67,7 @@ public class Main extends BaseGameActivity {
             {
                 mEngine.unregisterUpdateHandler(pTimerHandler);
                 SceneManager.getInstance().createGameScene();
+                //SceneManager.getInstance().createMenuScene();
             }
 		}));
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
