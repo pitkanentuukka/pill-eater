@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.FixedStepEngine;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -24,14 +25,14 @@ public class Main extends BaseGameActivity {
 	
 	private static final float WIDTH = 800;
 	private static final float HEIGHT = 480;
-	private Camera camera;
+	private BoundCamera camera;
 	private BaseScene scene; 
 	private BitmapTextureAtlas texture;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		// TODO Auto-generated method stub
-		camera = new Camera(0, 0, WIDTH, HEIGHT);
+		camera = new BoundCamera(0, 0, WIDTH, HEIGHT);
 		EngineOptions engineoptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
 		engineoptions.getAudioOptions().setNeedsSound(true);
 
