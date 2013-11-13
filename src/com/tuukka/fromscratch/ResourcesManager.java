@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -31,14 +32,15 @@ public class ResourcesManager {
 
 	public TiledTextureRegion player_region;
 	public TextureRegion redpill_region;
-	
+	public TextureRegion tile;
+
 	public Sound player_eat;
 	public Sound player_barf;
 	public Sound player_hitwall;
 	public Sound player_die;
 	public BaseGameActivity activity;
 	public Engine engine;
-	public Camera camera;
+	public BoundCamera camera;
     public VertexBufferObjectManager vbom;
     public Font font;
 
@@ -47,6 +49,8 @@ public class ResourcesManager {
 	public BuildableBitmapTextureAtlas gameTextureAtlas;
 
 	public TextureRegion menu_background_region;
+
+
     
 	private ResourcesManager() {
 		// private constructor
@@ -58,7 +62,7 @@ public class ResourcesManager {
 	}
 	
 	
-    public static void prepareManager(Engine engine, BaseGameActivity activity, Camera camera, VertexBufferObjectManager vbom) 
+    public static void prepareManager(Engine engine, BaseGameActivity activity, BoundCamera camera, VertexBufferObjectManager vbom) 
     {
         getInstance().engine = engine;
         getInstance().activity = activity;
@@ -89,13 +93,9 @@ public class ResourcesManager {
 	}
 
 	private void loadGameFonts() {
-		// TODO Auto-generated method stub
 
 		FontFactory.setAssetBasePath("font/");
 		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
-
-		//font = FontFactory.createFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50, true, Color.WHITE, 2, Color.BLACK);
-		//font = FontFactory.createFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 32, true, 100);
 		font = FontFactory.createFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "StayPuft.ttf", 32, true, android.graphics.Color.RED);
 		font.load();
 		
@@ -108,6 +108,7 @@ public class ResourcesManager {
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 		this.player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player_tiled_3.png", 3, 2); 
 		this.redpill_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "redpill.png");
+		this.tile = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tile.png");
 		this.menu_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "menubackground.png");		
 		try {
 			this.gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
@@ -117,29 +118,7 @@ public class ResourcesManager {
     	{
 			Debug.e(e);
 		}
-		/*
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
-        gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
-        
-       	platform1_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform1.png");
-       	platform2_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform2.png");
-       	platform3_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform3.png");
-        coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin.png");
-        player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
-        
-        complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
-        complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
-
-    	try 
-    	{
-			this.gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
-			this.gameTextureAtlas.load();
-		} 
-    	catch (final TextureAtlasBuilderException e)
-    	{
-			Debug.e(e);
-		}
-		 */
+	
 		
 	}
 

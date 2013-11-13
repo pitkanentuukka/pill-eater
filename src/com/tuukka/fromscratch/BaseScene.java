@@ -1,6 +1,7 @@
 package com.tuukka.fromscratch;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -15,7 +16,7 @@ public abstract class BaseScene extends Scene {
     protected ResourcesManager resourcesManager;
     protected SceneManager sceneManager;
     protected VertexBufferObjectManager vbom;
-    protected Camera camera;
+    protected BoundCamera camera;
     
 	protected float CAMERA_WIDTH;
 	protected float CAMERA_HEIGHT;

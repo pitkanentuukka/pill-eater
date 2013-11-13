@@ -1,5 +1,6 @@
 package com.tuukka.fromscratch;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -9,19 +10,27 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.util.SAXUtils;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.align.HorizontalAlign;
+import org.andengine.util.level.EntityLoader;
+import org.andengine.util.level.constants.LevelConstants;
+import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
+import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
+import org.xml.sax.Attributes;
 
 
 import com.badlogic.gdx.math.Vector2;
@@ -37,6 +46,16 @@ import com.tuukka.fromscratch.SceneManager.SceneType;
 
 
 public class GameScene extends BaseScene implements IAccelerationListener, Observer{
+	
+	// these are for level loading
+	private static final String TAG_ENTITY = "entity";
+	private static final String TAG_ENTITY_ATTRIBUTE_X = "x";
+	private static final String TAG_ENTITY_ATTRIBUTE_Y = "y";
+	private static final String TAG_ENTITY_ATTRIBUTE_TYPE = "type";
+
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TILE = "tile";
+
+
 	private HUD gameHUD;
 	private Text scoreText;
 	private Text healthText;
@@ -302,12 +321,12 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
         
         player.eat();
 	}		
+	/* is this used anywhere?
 	private void playerHitsWall(float firsthit) {
 				// TODO Auto-generated method stub
-	}
+	}*/
 	
 	public void gameOver() {
-		//this.healthText.setText("health: " +0 );
 		TimerHandler gameOverTimeHandler;
 		resourcesManager.engine.registerUpdateHandler(gameOverTimeHandler = new TimerHandler(3, new ITimerCallback(){
 			public void onTimePassed(final TimerHandler pTimerHandler) {
@@ -331,4 +350,52 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 			}
 		}
 	}
+
+	private void loadLevel(int levelID) {
+
+		final FixtureDef WALL_FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f, 0.5f);
+	    final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
+	    
+		levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
+				{
+
+					@Override
+					public IEntity onLoadEntity(String pEntityName,
+							IEntity pParent, Attributes pAttributes,
+							SimpleLevelEntityLoaderData pEntityLoaderData)
+							throws IOException {
+			            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_WIDTH);
+			            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
+			            
+			            camera.setBounds(0, 0, width, height); // here we set camera bounds
+			            camera.setBoundsEnabled(true);
+			            return GameScene.this;
+					}
+			
+				});
+		 levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY)
+				    {
+				        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException
+				        {
+				            final int x = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_X);
+				            final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
+				            final String type = SAXUtils.getAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
+				            
+				            final Sprite levelObject;
+				            
+				            if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TILE)) {
+				                levelObject = new Sprite(x, y, resourcesManager.tile, vbom);
+								PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, WALL_FIXTURE_DEF).setUserData("platform1");
+				            } else {
+				                throw new IllegalArgumentException();
+				            }
+				            levelObject.setCullingEnabled(true);
+				            return levelObject;
+				            
+				        }
+				    });
+
+				    levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
+	}
+
 }
