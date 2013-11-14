@@ -1,5 +1,6 @@
 package com.tuukka.fromscratch;
 
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,6 +55,8 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	private static final String TAG_ENTITY_ATTRIBUTE_TYPE = "type";
 
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TILE = "tile";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PILL = "pill";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 
 
 	private HUD gameHUD;
@@ -85,6 +88,7 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	    CAMERA_WIDTH = resourcesManager.camera.getXMax();
 	    CAMERA_HEIGHT = resourcesManager.camera.getYMax();
 	    
+	    // remove these and add loadlevel() when it's ready 
 	    createPlayer();
 	    
 	    createPill();
@@ -384,8 +388,21 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				            final Sprite levelObject;
 				            
 				            if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TILE)) {
-				                levelObject = new Sprite(x, y, resourcesManager.tile, vbom);
-								PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, WALL_FIXTURE_DEF).setUserData("platform1");
+				                levelObject = new Sprite(x, y, resourcesManager.tile_region, vbom);
+				                Body body  = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, WALL_FIXTURE_DEF);
+				                body.setUserData("wall");
+				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PILL)) {
+				                levelObject = new Pill(x, y, resourcesManager.redpill_region, vbom);
+				            	
+							    final FixtureDef redpillFixtureDef = PhysicsFactory.createFixtureDef(0, 0.0f, 0.0f);
+						        redpill_body = PhysicsFactory.createCircleBody(physicsWorld, levelObject, BodyType.StaticBody, redpillFixtureDef);
+						        redpill_body.setUserData("redpill");
+						        physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, redpill_body, true, true));
+						        redpill.setUserData("redpill");
+						        //this.attachChild(redpill);
+				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
+				                levelObject = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
+				                ((Player) levelObject).addObserver(GameScene.this);
 				            } else {
 				                throw new IllegalArgumentException();
 				            }
