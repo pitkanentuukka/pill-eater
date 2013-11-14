@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entity type=player texturefile='assets/gfx/player_tiled_3.png' texturerows=2 texturecols=3/>
+<entity type=tile texturefile='assets/gfx/tile.png' texturerows=1 texturecols=1/>
+<entity type=pill texturefile='assets/gfx/redpill.png' texturerows=1 texturecols=1/>
