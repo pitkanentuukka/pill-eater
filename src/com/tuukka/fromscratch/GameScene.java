@@ -89,11 +89,12 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	    CAMERA_HEIGHT = resourcesManager.camera.getYMax();
 	    
 	    // remove these and add loadlevel() when it's ready 
-	    createPlayer();
+	    /*createPlayer();
 	    
 	    createPill();
 	    
-	    createBounds();
+	    createBounds();*/
+	    loadLevel(1);
 
 		
 		this.taskList = new LinkedList();
@@ -167,11 +168,13 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	}
 
 
-	private void createPlayer() {
+	private void createPlayer(int x, int y) {
 	    // create player
-	    player = new Player((resourcesManager.camera.getXMax()/2), (resourcesManager.camera.getYMax()/2), resourcesManager.player_region, vbom, physicsWorld);
-        this.attachChild(player);
+	    //player = new Player((resourcesManager.camera.getXMax()/2), (resourcesManager.camera.getYMax()/2), resourcesManager.player_region, vbom, physicsWorld);
+	    player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
+        //this.attachChild(player);
         player.addObserver(this);
+        camera.setChaseEntity(player);
 		
 	}
 
@@ -242,15 +245,14 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	{
 		ContactListener contactListener = new ContactListener() {
 			public void beginContact(Contact contact) {
-	            final Fixture x1 = contact.getFixtureA();
+	            /*final Fixture x1 = contact.getFixtureA();
 	            final Fixture x2 = contact.getFixtureB();
 	            
 	            if (x1.getBody().getUserData() == "redpill" && x2.getBody().getUserData() == "player") {
 	            	playerEatsAPill();
 	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() == "redpill") {
 	            	playerEatsAPill();
-	            	
-	            }
+	            }*/
 	
 			
 			}
@@ -307,7 +309,7 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 		/* the minx, miny is width / 2, height / 2
 		 * the maxx, maxy is camwidth - width/2, camheight - height/2
 		 */
-        final float widthD2 = redpill.getWidth() / 2;
+        /*final float widthD2 = redpill.getWidth() / 2;
         final float heightD2 = redpill.getHeight() / 2;
         float minY = widthD2;
         float minX = heightD2;
@@ -319,7 +321,10 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
         
         y /=32.0f;
         x /=32.0f;
-        taskList.add(new MoveBodyTask(redpill_body, x, y));
+        taskList.add(new MoveBodyTask(redpill_body, x, y));*/
+		
+		// we need to get the sprite from the body
+
         this.score++;
         this.scoreText.setText("score: " + score);
         
@@ -398,11 +403,13 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 						        redpill_body = PhysicsFactory.createCircleBody(physicsWorld, levelObject, BodyType.StaticBody, redpillFixtureDef);
 						        redpill_body.setUserData("redpill");
 						        physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, redpill_body, true, true));
-						        redpill.setUserData("redpill");
+						        levelObject.setUserData("redpill");
 						        //this.attachChild(redpill);
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
-				                levelObject = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
-				                ((Player) levelObject).addObserver(GameScene.this);
+				            	createPlayer(x, y);
+				                //player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
+				                //player.addObserver(GameScene.this);
+				                levelObject = player;
 				            } else {
 				                throw new IllegalArgumentException();
 				            }
@@ -415,4 +422,8 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				    levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
 	}
 
+
+	private void createPlayer2() {
+	
+	}
 }

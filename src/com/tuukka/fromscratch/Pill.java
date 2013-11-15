@@ -21,5 +21,9 @@ public class Pill extends Sprite {
 		this.setY(pY);*/
 		this.setPosition(pX, pY);
 	}
-
+	public void getEaten(Player player) {
+		this.setVisible(false);
+        this.setIgnoreUpdate(true); 
+        this.dispose();
+	}
 }
