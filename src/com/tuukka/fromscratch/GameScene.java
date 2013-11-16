@@ -245,13 +245,15 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	{
 		ContactListener contactListener = new ContactListener() {
 			public void beginContact(Contact contact) {
-	            /*final Fixture x1 = contact.getFixtureA();
+	            final Fixture x1 = contact.getFixtureA();
 	            final Fixture x2 = contact.getFixtureB();
 	            
-	            if (x1.getBody().getUserData() == "redpill" && x2.getBody().getUserData() == "player") {
-	            	playerEatsAPill();
-	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() == "redpill") {
-	            	playerEatsAPill();
+	            /*if (x1.getBody().getUserData() instanceof Pill && x2.getBody().getUserData() == "player") {
+	            	Pill pill = (Pill) x1.getBody().getUserData();
+	            	//playerEatsAPill(pill);
+	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() instanceof Pill) {
+	            	Pill pill = (Pill) x2.getBody().getUserData();
+	            	//playerEatsAPill(pill);
 	            }*/
 	
 			
@@ -325,6 +327,12 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 		
 		// we need to get the sprite from the body
 
+		/*pill.setIgnoreUpdate(true);
+		pill.setVisible(false);
+		pill.detachSelf();
+		pill.detachChildren();
+		pill.dispose();*/
+		
         this.score++;
         this.scoreText.setText("score: " + score);
         
@@ -397,14 +405,23 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				                Body body  = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, WALL_FIXTURE_DEF);
 				                body.setUserData("wall");
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PILL)) {
-				                levelObject = new Pill(x, y, resourcesManager.redpill_region, vbom);
 				            	
-							    final FixtureDef redpillFixtureDef = PhysicsFactory.createFixtureDef(0, 0.0f, 0.0f);
-						        redpill_body = PhysicsFactory.createCircleBody(physicsWorld, levelObject, BodyType.StaticBody, redpillFixtureDef);
-						        redpill_body.setUserData("redpill");
-						        physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, redpill_body, true, true));
-						        levelObject.setUserData("redpill");
-						        //this.attachChild(redpill);
+				                levelObject = new Sprite(x, y, resourcesManager.redpill_region, vbom)
+				                {
+				                    @Override
+				                    protected void onManagedUpdate(float pSecondsElapsed) 
+				                    {
+				                        super.onManagedUpdate(pSecondsElapsed);
+				                        if (player.collidesWith(this))
+				                        {
+				                        	playerEatsAPill();
+				                            this.setVisible(false);
+				                            this.setIgnoreUpdate(true);
+				                        }
+				                        
+				                    }
+				                };
+				            	
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
 				            	createPlayer(x, y);
 				                //player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
@@ -423,7 +440,4 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	}
 
 
-	private void createPlayer2() {
-	
-	}
 }
