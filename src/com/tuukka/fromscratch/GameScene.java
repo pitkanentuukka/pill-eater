@@ -65,15 +65,6 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	private int score = 0;
 	private PhysicsWorld physicsWorld;
 	private Player player;
-	private Pill redpill;
-	private Body player_body;
-	private Body redpill_body;
-	
-	private List<Task> taskList;
-	private Body groundbody;
-	private Body roofbody;
-	private Body leftwallbody;
-	private Body rightwallbody;
 	
 	public void createScene() {
 		
@@ -88,100 +79,13 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	    CAMERA_WIDTH = resourcesManager.camera.getXMax();
 	    CAMERA_HEIGHT = resourcesManager.camera.getYMax();
 	    
-	    // remove these and add loadlevel() when it's ready 
-	    /*createPlayer();
-	    
-	    createPill();
-	    
-	    createBounds();*/
+
 	    loadLevel(1);
-
-		
-		this.taskList = new LinkedList();
-		
-		this.registerUpdateHandler(new IUpdateHandler()
-	    {
-
-
-			@Override
-	        public void onUpdate(float pSecondsElapsed) {
-	            if(!taskList.isEmpty())
-	            {
-	                for(int i = 0; i < taskList.size(); i++)
-	                {
-	                    ((Task) taskList.get(i)).run();
-	                }
-	                taskList.clear();
-	            }
-
-	        }
-
-	        public void reset() {
-	            // TODO Auto-generated method stub
-
-	        }
-	    });
-	    
-	}
-
-
-	private void createBounds() {
-        // create bounds
-		final Rectangle ground = new Rectangle(CAMERA_WIDTH / 2, 1, CAMERA_WIDTH, 2, vbom);
-		final Rectangle roof = new Rectangle(CAMERA_WIDTH / 2, CAMERA_HEIGHT - 1, CAMERA_WIDTH, 2, vbom);
-		final Rectangle left = new Rectangle(1, CAMERA_HEIGHT / 2, 1, CAMERA_HEIGHT, vbom);
-		final Rectangle right = new Rectangle(CAMERA_WIDTH - 1, CAMERA_HEIGHT / 2, 2, CAMERA_HEIGHT, vbom);
-
-		// final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
-		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0.0f, 0.0f, 1.5f);
-		groundbody = PhysicsFactory.createBoxBody(this.physicsWorld, ground, BodyType.StaticBody, wallFixtureDef);
-		roofbody = PhysicsFactory.createBoxBody(this.physicsWorld, roof, BodyType.StaticBody, wallFixtureDef);
-		leftwallbody = PhysicsFactory.createBoxBody(this.physicsWorld, left, BodyType.StaticBody, wallFixtureDef);
-		rightwallbody = PhysicsFactory.createBoxBody(this.physicsWorld, right, BodyType.StaticBody, wallFixtureDef);
-		
-		groundbody.setUserData("wall");
-		roofbody.setUserData("wall");
-		rightwallbody.setUserData("wall");
-		leftwallbody.setUserData("wall");
-
-		this.attachChild(ground);
-		this.attachChild(roof);
-		this.attachChild(left);
-		this.attachChild(right);
-	}
-
-
-	private void createPill() {
-        // create pill
-        float redpillY = (float) (Math.random() * CAMERA_HEIGHT);
-        float redpillX = (float) (Math.random() * CAMERA_WIDTH);
-        redpill = new Pill(redpillX, redpillY, resourcesManager.redpill_region, vbom);
-	    final FixtureDef redpillFixtureDef = PhysicsFactory.createFixtureDef(0, 0.0f, 0.0f);
-        redpill_body = PhysicsFactory.createCircleBody(this.physicsWorld, redpill, BodyType.StaticBody, redpillFixtureDef);
-        redpill_body.setUserData("redpill");
-        this.physicsWorld.registerPhysicsConnector(new PhysicsConnector(redpill, redpill_body, true, true));
-        redpill.setUserData("redpill");
-        this.attachChild(redpill);
-			
-        
-		
-	}
-
-
-	private void createPlayer(int x, int y) {
-	    // create player
-	    //player = new Player((resourcesManager.camera.getXMax()/2), (resourcesManager.camera.getYMax()/2), resourcesManager.player_region, vbom, physicsWorld);
-	    player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
-        //this.attachChild(player);
-        player.addObserver(this);
-        camera.setChaseEntity(player);
-		
 	}
 
 
 
 	private void createPhysics() {
-//		physicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0,SensorManager.GRAVITY_EARTH), false);
 		physicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0,0), false);
 	    physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
@@ -248,15 +152,7 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	            final Fixture x1 = contact.getFixtureA();
 	            final Fixture x2 = contact.getFixtureB();
 	            
-	            /*if (x1.getBody().getUserData() instanceof Pill && x2.getBody().getUserData() == "player") {
-	            	Pill pill = (Pill) x1.getBody().getUserData();
-	            	//playerEatsAPill(pill);
-	            } else if (x1.getBody().getUserData() == "player" && x2.getBody().getUserData() instanceof Pill) {
-	            	Pill pill = (Pill) x2.getBody().getUserData();
-	            	//playerEatsAPill(pill);
-	            }*/
-	
-			
+
 			}
 
 			public void endContact(Contact contact) {
@@ -307,41 +203,7 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 		this.physicsWorld.setGravity(gravity);
 		Vector2Pool.recycle(gravity);
 	}
-	private void playerEatsAPill() {
-		/* the minx, miny is width / 2, height / 2
-		 * the maxx, maxy is camwidth - width/2, camheight - height/2
-		 */
-        /*final float widthD2 = redpill.getWidth() / 2;
-        final float heightD2 = redpill.getHeight() / 2;
-        float minY = widthD2;
-        float minX = heightD2;
-        // because width/2 is added to the random number, the actual max is camwidth-pillwidth
-        float maxY = CAMERA_HEIGHT - redpill.getHeight();
-        float maxX = CAMERA_WIDTH - redpill.getWidth();
-        float y = minY + (float)Math.random() * maxY;
-        float x = widthD2+(float)Math.random() * maxX;
-        
-        y /=32.0f;
-        x /=32.0f;
-        taskList.add(new MoveBodyTask(redpill_body, x, y));*/
-		
-		// we need to get the sprite from the body
 
-		/*pill.setIgnoreUpdate(true);
-		pill.setVisible(false);
-		pill.detachSelf();
-		pill.detachChildren();
-		pill.dispose();*/
-		
-        this.score++;
-        this.scoreText.setText("score: " + score);
-        
-        player.eat();
-	}		
-	/* is this used anywhere?
-	private void playerHitsWall(float firsthit) {
-				// TODO Auto-generated method stub
-	}*/
 	
 	public void gameOver() {
 		TimerHandler gameOverTimeHandler;
@@ -414,7 +276,9 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				                        super.onManagedUpdate(pSecondsElapsed);
 				                        if (player.collidesWith(this))
 				                        {
-				                        	playerEatsAPill();
+				                        	GameScene.this.score++;
+        									GameScene.this.scoreText.setText("score: " + score);
+        									player.eat();
 				                            this.setVisible(false);
 				                            this.setIgnoreUpdate(true);
 				                        }
@@ -423,9 +287,10 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				                };
 				            	
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
-				            	createPlayer(x, y);
-				                //player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
-				                //player.addObserver(GameScene.this);
+				            	player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
+				            	player.addObserver(GameScene.this);
+				            	camera.setChaseEntity(player);
+
 				                levelObject = player;
 				            } else {
 				                throw new IllegalArgumentException();
