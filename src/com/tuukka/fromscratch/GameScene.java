@@ -57,14 +57,18 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TILE = "tile";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PILL = "pill";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_EXIT = "exit";
 
 
 	private HUD gameHUD;
 	private Text scoreText;
 	private Text healthText;
 	private int score = 0;
+	private int pillCount;
 	private PhysicsWorld physicsWorld;
 	private Player player;
+	
+	private Exit exit;
 	
 	public void createScene() {
 		
@@ -78,6 +82,8 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	    
 	    CAMERA_WIDTH = resourcesManager.camera.getXMax();
 	    CAMERA_HEIGHT = resourcesManager.camera.getYMax();
+	    
+	    this.pillCount = 0; 
 	    
 
 	    loadLevel(1);
@@ -149,8 +155,6 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	{
 		ContactListener contactListener = new ContactListener() {
 			public void beginContact(Contact contact) {
-	            final Fixture x1 = contact.getFixtureA();
-	            final Fixture x2 = contact.getFixtureB();
 	            
 
 			}
@@ -267,10 +271,11 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				                Body body  = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, WALL_FIXTURE_DEF);
 				                body.setUserData("wall");
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PILL)) {
-				            	
+				            	pillCount++;
 				                levelObject = new Sprite(x, y, resourcesManager.redpill_region, vbom)
 				                {
-				                    @Override
+
+									@Override
 				                    protected void onManagedUpdate(float pSecondsElapsed) 
 				                    {
 				                        super.onManagedUpdate(pSecondsElapsed);
@@ -281,11 +286,19 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
         									player.eat();
 				                            this.setVisible(false);
 				                            this.setIgnoreUpdate(true);
+				                            pillCount--;
+				                            if (pillCount == 0) {
+				                            	exit.enable(player, GameScene.this);
+				                            }
+				                            
 				                        }
 				                        
 				                    }
 				                };
 				            	
+				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_EXIT)) {
+				                exit = new Exit(x, y, resourcesManager.exit_region, vbom);
+				                levelObject = exit;
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
 				            	player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
 				            	player.addObserver(GameScene.this);
@@ -302,6 +315,13 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				    });
 
 				    levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
+	}
+
+
+
+	public void levelComplete() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

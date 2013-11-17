@@ -33,6 +33,7 @@ public class ResourcesManager {
 	public TiledTextureRegion player_region;
 	public TextureRegion redpill_region;
 	public TextureRegion tile_region;
+	public TiledTextureRegion exit_region;
 
 	public Sound player_eat;
 	public Sound player_barf;
@@ -49,6 +50,7 @@ public class ResourcesManager {
 	public BuildableBitmapTextureAtlas gameTextureAtlas;
 
 	public TextureRegion menu_background_region;
+
 
 
     
