@@ -272,9 +272,7 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				                body.setUserData("wall");
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PILL)) {
 				            	pillCount++;
-				                levelObject = new Sprite(x, y, resourcesManager.redpill_region, vbom)
-				                {
-
+				                levelObject = new Sprite(x, y, resourcesManager.redpill_region, vbom) {
 									@Override
 				                    protected void onManagedUpdate(float pSecondsElapsed) 
 				                    {
@@ -290,9 +288,7 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				                            if (pillCount == 0) {
 				                            	exit.enable(player, GameScene.this);
 				                            }
-				                            
 				                        }
-				                        
 				                    }
 				                };
 				            	
@@ -303,24 +299,20 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				            	player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
 				            	player.addObserver(GameScene.this);
 				            	camera.setChaseEntity(player);
-
 				                levelObject = player;
 				            } else {
 				                throw new IllegalArgumentException();
 				            }
 				            levelObject.setCullingEnabled(true);
 				            return levelObject;
-				            
 				        }
 				    });
-
 				    levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
 	}
 
-
-
 	public void levelComplete() {
 		// TODO Auto-generated method stub
+		this.gameOver();
 		
 	}
 
