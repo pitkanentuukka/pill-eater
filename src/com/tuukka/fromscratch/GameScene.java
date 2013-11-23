@@ -1,23 +1,19 @@
 package com.tuukka.fromscratch;
 
 
+import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
-import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.util.SAXUtils;
@@ -69,6 +65,8 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	private Player player;
 	
 	private Exit exit;
+	private int currentLevel = 0;
+	private String[] levelList; 
 	
 	public void createScene() {
 		
@@ -84,9 +82,16 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	    CAMERA_HEIGHT = resourcesManager.camera.getYMax();
 	    
 	    this.pillCount = 0; 
-	    
 
-	    loadLevel(1);
+		try {
+			levelList = activity.getAssets().list("level/");
+			loadLevel(currentLevel);
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 
@@ -151,8 +156,7 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	}
 	
 	
-	private ContactListener contactListener()
-	{
+	private ContactListener contactListener() {
 		ContactListener contactListener = new ContactListener() {
 			public void beginContact(Contact contact) {
 	            
@@ -307,14 +311,24 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				            return levelObject;
 				        }
 				    });
-				    levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
+				    levelLoader.loadLevelFromAsset(activity.getAssets(), levelList[levelID]);
 	}
 
 	public void levelComplete() {
-		// TODO Auto-generated method stub
-		this.gameOver();
+		// todo: display something fancy to congratulate the user for his heroic achievement
+		TimerHandler levelCompleteTimeHandler;
+		resourcesManager.engine.registerUpdateHandler(levelCompleteTimeHandler = new TimerHandler(3, new ITimerCallback(){
+			public void onTimePassed(final TimerHandler pTimerHandler) {
+				if (currentLevel < levelList.length) {
+					loadLevel(++currentLevel);
+				}
+				
+			}
+		}));
+		
 		
 	}
+
 
 
 }
