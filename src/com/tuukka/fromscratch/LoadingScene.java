@@ -25,6 +25,8 @@ public class LoadingScene extends BaseScene {
 
 	public void disposeScene() {
 
+	    this.detachSelf();
+	    this.dispose();
 	}
 
 }

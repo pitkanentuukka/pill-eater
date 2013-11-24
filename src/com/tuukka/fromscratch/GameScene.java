@@ -30,6 +30,8 @@ import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.xml.sax.Attributes;
 
 
+import android.util.Log;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -66,7 +68,8 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	
 	private Exit exit;
 	private int currentLevel = 0;
-	private String[] levelList; 
+	private String[] levelList;
+	private Text levelCompleteText;
 	
 	public void createScene() {
 		
@@ -75,7 +78,8 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 		createBackground();
 		createHUD();
 	    createPhysics();
-	    
+	    levelCompleteText = new Text(400, 240, resourcesManager.font, "Level Complete!", vbom);
+	    levelCompleteText.setVisible(false);
 	    resourcesManager.engine.enableAccelerationSensor(activity, this);
 	    
 	    CAMERA_WIDTH = resourcesManager.camera.getXMax();
@@ -84,8 +88,12 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 	    this.pillCount = 0; 
 
 		try {
-			levelList = activity.getAssets().list("level/");
+			levelList = activity.getAssets().list("level");
 			loadLevel(currentLevel);
+			//System.out.println(levelList.length);
+			/*for (int i = 0; i < levelList.length; i++)
+				Log.d("levelList: ", String.valueOf(i) + ": " + levelList[i]);*/
+			//Log.d("levelList:", String.valueOf(levelList.length));
 			
 			
 		} catch (IOException e) {
@@ -260,10 +268,8 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 					}
 			
 				});
-		 levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY)
-				    {
-				        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException
-				        {
+		 levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY) {
+				        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException {
 				            final int x = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_X);
 				            final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
 				            final String type = SAXUtils.getAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
@@ -300,8 +306,10 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				                exit = new Exit(x, y, resourcesManager.exit_region, vbom);
 				                levelObject = exit;
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
-				            	player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
-				            	player.addObserver(GameScene.this);
+				            	if (player == null) {
+					            	player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
+					            	player.addObserver(GameScene.this);
+				            	}
 				            	camera.setChaseEntity(player);
 				                levelObject = player;
 				            } else {
@@ -311,16 +319,20 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				            return levelObject;
 				        }
 				    });
-				    levelLoader.loadLevelFromAsset(activity.getAssets(), levelList[levelID]);
+				    levelLoader.loadLevelFromAsset(activity.getAssets(), "level/"+levelList[levelID]);
 	}
 
 	public void levelComplete() {
 		// todo: display something fancy to congratulate the user for his heroic achievement
+		levelCompleteText.setVisible(true);
+	    //attachChild(levelCompleteText);
 		TimerHandler levelCompleteTimeHandler;
 		resourcesManager.engine.registerUpdateHandler(levelCompleteTimeHandler = new TimerHandler(3, new ITimerCallback(){
 			public void onTimePassed(final TimerHandler pTimerHandler) {
-				if (currentLevel < levelList.length) {
-					loadLevel(++currentLevel);
+				if (++currentLevel < levelList.length) {
+					loadLevel(currentLevel);
+					detachChild(levelCompleteText);
+					levelCompleteText.setVisible(false);
 				}
 				
 			}
