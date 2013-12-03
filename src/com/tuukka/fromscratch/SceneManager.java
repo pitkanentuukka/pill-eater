@@ -20,6 +20,7 @@ public class SceneManager {
 	
     private BaseScene currentScene;
 
+	@SuppressWarnings("unused")
 	private SceneType currentSceneType;
 
 	public enum SceneType {

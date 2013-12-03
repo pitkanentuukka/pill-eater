@@ -1,21 +1,16 @@
 package com.tuukka.fromscratch;
 
-import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
-import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.os.Build;
 import android.os.Vibrator;
 
@@ -29,14 +24,10 @@ public class Player extends AnimatedSprite {
 	
 	private Body body;
 	private Float health;
-	private PhysicsWorld physworld; // do we need this?
 	private FixtureDef playerFixtureDef;
 	private DelegatedObservable obs;
 	
 	private ResourcesManager resourcesManager;
-	private SceneManager sceneManager;
-	
-	
 	private GameManager gameManager;
 	
 
@@ -45,7 +36,6 @@ public class Player extends AnimatedSprite {
 		super(x, y, player_region, vbom);
 		
 		resourcesManager = ResourcesManager.getInstance();
-		sceneManager = SceneManager.getInstance();
 		gameManager = GameManager.getInstance();
 
 	    //playerFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 1.0f); // get these parameters from optionsmanager or somesuch
