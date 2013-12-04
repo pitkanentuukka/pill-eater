@@ -324,6 +324,7 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 
 	public void levelComplete() {
 		// todo: display something fancy to congratulate the user for his heroic achievement
+		detachChild(player);
 		levelCompleteText.setVisible(true);
 	    //attachChild(levelCompleteText);
 		TimerHandler levelCompleteTimeHandler;
