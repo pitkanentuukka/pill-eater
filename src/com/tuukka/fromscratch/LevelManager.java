@@ -6,6 +6,7 @@ import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.IEntity;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
+import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.SAXUtils;
 import org.andengine.util.level.EntityLoader;
@@ -15,11 +16,21 @@ import org.andengine.util.level.simple.SimpleLevelLoader;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import android.app.Activity;
+import org.xml.sax.Attributes;
 
 public class LevelManager {
 
 	private static final LevelManager INSTANCE = new LevelManager();
 	
+	private static final String TAG_ENTITY = "entity";
+	private static final String TAG_ENTITY_ATTRIBUTE_X = "x";
+	private static final String TAG_ENTITY_ATTRIBUTE_Y = "y";
+	private static final String TAG_ENTITY_ATTRIBUTE_TYPE = "type";
+
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TILE = "tile";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PILL = "pill";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_EXIT = "exit";
 	
 	private String[] levelList;
 	private Activity activity;
@@ -27,7 +38,12 @@ public class LevelManager {
 	private BoundCamera camera;
 	private VertexBufferObjectManager vbom;
 	
+    private PhysicsWorld physicsWorld;
+
+	
 	private SceneManager sceneManager;
+	private ResourcesManager resourcesManager;
+	private BaseScene currentScene;
 
 
 
@@ -38,12 +54,15 @@ public class LevelManager {
 	
 	
 	
-	public void prepareManager(Activity activity, VertexBufferObjectManager vbom, BoundCamera camera) {
+	public void prepareManager(Activity activity, VertexBufferObjectManager vbom, BoundCamera camera, PhysicsWorld physw) {
 		this.activity = activity;
 		this.vbom = vbom;
 		this.camera = camera;
 
 		this.sceneManager = SceneManager.getInstance();
+		this.resourcesManager = ResourcesManager.getInstance();
+		this.physicsWorld = physw;
+		this.currentScene = sceneManager.getCurrentScene();
 		
 		
 	}
@@ -88,7 +107,9 @@ public class LevelManager {
 			
 				});
 		 levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY) {
-				        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException {
+
+
+						public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException {
 				            final int x = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_X);
 				            final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
 				            final String type = SAXUtils.getAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
