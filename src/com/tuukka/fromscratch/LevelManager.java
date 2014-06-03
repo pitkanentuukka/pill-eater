@@ -1,6 +1,7 @@
 package com.tuukka.fromscratch;
 
 import java.io.IOException;
+import java.util.Observer;
 
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
@@ -15,6 +16,8 @@ import org.andengine.util.level.constants.LevelConstants;
 import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import android.app.Activity;
@@ -48,6 +51,9 @@ public class LevelManager {
 	private BaseScene currentScene;
 
 
+	private Player player;
+
+	protected Exit exit;
 
 	public static LevelManager getInstance() {
 		return INSTANCE;
@@ -111,6 +117,7 @@ public class LevelManager {
 		 levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY) {
 
 
+
 						public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException {
 				            final int x = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_X);
 				            final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
@@ -150,7 +157,7 @@ public class LevelManager {
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
 				            	if (player == null) {
 					            	player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
-					            	player.addObserver(GameScene.this);
+					            	player.addObserver((Observer) currentScene);
 				            	}
 				            	camera.setChaseEntity(player);
 				                levelObject = player;
