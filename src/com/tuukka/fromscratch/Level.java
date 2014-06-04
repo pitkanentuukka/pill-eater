@@ -8,7 +8,16 @@ public class Level {
 
 	private ArrayList pillList;
 	private int pillcount = 0;
+	private SceneManager sceneManager;
 	
+	public GameScene currentScene;
+	
+	public Level() {
+		sceneManager = SceneManager.getInstance();
+		currentScene = (GameScene) sceneManager.getCurrentScene();
+		
+		
+	}
 	
     public void setPlayerAndExit(Player player, Exit exit) {
     	this.player = player;
@@ -36,6 +45,17 @@ public class Level {
 		for (int i=0;i<pillcount;i++) {
 			Pill temp = (Pill) pillList.get(i);
 			temp.setPlayerAndExit(player, exit);
+		}
+	}
+	
+	
+	public void eatPill() {
+		pillcount--;
+    	currentScene.setScore(currentScene.getScore() + 1);
+		currentScene.scoreText.setText("score: " + currentScene.getScore());
+		if (pillcount < 1) {
+			exit.enable(player, currentScene);
+
 		}
 	}
 
