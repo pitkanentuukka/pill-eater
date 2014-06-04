@@ -59,7 +59,8 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 
 
 	private HUD gameHUD;
-	private Text scoreText;
+	public Text scoreText;
+
 	private Text healthText;
 	private int score = 0;
 	private int pillCount;
@@ -289,8 +290,8 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 				                        super.onManagedUpdate(pSecondsElapsed);
 				                        if (player.collidesWith(this))
 				                        {
-				                        	GameScene.this.score++;
-        									GameScene.this.scoreText.setText("score: " + score);
+				                        	GameScene.this.setScore(GameScene.this.getScore() + 1);
+        									GameScene.this.scoreText.setText("score: " + getScore());
         									player.eat();
 				                            this.setVisible(false);
 				                            this.setIgnoreUpdate(true);
@@ -340,6 +341,18 @@ public class GameScene extends BaseScene implements IAccelerationListener, Obser
 		}));
 		
 		
+	}
+
+
+
+	public int getScore() {
+		return score;
+	}
+
+
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 
