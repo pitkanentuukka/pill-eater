@@ -21,4 +21,22 @@ public class Level {
 		
 	}
 
+	public void setPlayer(Player player2) {
+		// TODO Auto-generated method stub
+		this.player = player2;
+	}
+
+	public void setExit(Exit exit2) {
+		// TODO Auto-generated method stub
+		this.exit = exit2;
+	}
+	
+	public void onLoadComplete() {
+			
+		for (int i=0;i<pillcount;i++) {
+			Pill temp = (Pill) pillList.get(i);
+			temp.setPlayerAndExit(player, exit);
+		}
+	}
+
 }

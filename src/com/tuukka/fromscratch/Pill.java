@@ -29,6 +29,7 @@ public class Pill extends Sprite {
         	/**
         	 * who's actually keeping score?
         	 * it probably shouldn't be gamescene!
+        	 * Shouldn't most of this be in the level class?
         	 */
         	
         	GameScene.this.score++;

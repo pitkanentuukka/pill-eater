@@ -93,6 +93,7 @@ public class LevelManager {
 	
 	private void loadLevel(int levelID) {
 
+       	final Level level = new Level();
 		final FixtureDef WALL_FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f, 0.5f);
 	    final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
 	    
@@ -114,11 +115,11 @@ public class LevelManager {
 					}
 			
 				});
+
 		 levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY) {
-
-
-
-						public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException {
+						public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, 
+								final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData)
+								throws IOException {
 				            final int x = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_X);
 				            final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
 				            final String type = SAXUtils.getAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
@@ -130,17 +131,20 @@ public class LevelManager {
 				                Body body  = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, WALL_FIXTURE_DEF);
 				                body.setUserData("wall");
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PILL)) {
-				            	pillCount++;
+
 				                // levelObject = new Sprite(x, y, resourcesManager.redpill_region, vbom) {
 				            	levelObject = new Pill(x, y, resourcesManager.redpill_region, vbom);
+								level.addPill((Pill) levelObject);
 				            	
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_EXIT)) {
 				                exit = new Exit(x, y, resourcesManager.exit_region, vbom);
 				                levelObject = exit;
+				                level.setExit(exit);
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
 				            	if (player == null) {
 					            	player = new Player(x, y, resourcesManager.player_region, vbom, physicsWorld);
 					            	player.addObserver((Observer) currentScene);
+					            	level.setPlayer(player);
 				            	}
 				            	camera.setChaseEntity(player);
 				                levelObject = player;
