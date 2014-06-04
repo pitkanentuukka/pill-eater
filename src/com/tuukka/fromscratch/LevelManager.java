@@ -131,25 +131,8 @@ public class LevelManager {
 				                body.setUserData("wall");
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PILL)) {
 				            	pillCount++;
-				                levelObject = new Sprite(x, y, resourcesManager.redpill_region, vbom) {
-									@Override
-				                    protected void onManagedUpdate(float pSecondsElapsed) 
-				                    {
-				                        super.onManagedUpdate(pSecondsElapsed);
-				                        if (player.collidesWith(this))
-				                        {
-				                        	GameScene.this.score++;
-        									GameScene.this.scoreText.setText("score: " + score);
-        									player.eat();
-				                            this.setVisible(false);
-				                            this.setIgnoreUpdate(true);
-				                            pillCount--;
-				                            if (pillCount == 0) {
-				                            	exit.enable(player, GameScene.this);
-				                            }
-				                        }
-				                    }
-				                };
+				                // levelObject = new Sprite(x, y, resourcesManager.redpill_region, vbom) {
+				            	levelObject = new Pill(x, y, resourcesManager.redpill_region, vbom);
 				            	
 				            } else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_EXIT)) {
 				                exit = new Exit(x, y, resourcesManager.exit_region, vbom);
