@@ -1,11 +1,7 @@
 package com.tuukka.fromscratch;
 
 import org.andengine.engine.Engine;
-import org.andengine.entity.scene.Scene;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
-
-
-import com.tuukka.fromscratch.SceneManager.SceneType;
 
 public class SceneManager {
 	

@@ -6,7 +6,7 @@ public class Level {
 	private Player player;
 	private Exit exit;
 
-	private ArrayList pillList;
+	private ArrayList<Pill> pillList;
 	private int pillcount = 0;
 	private SceneManager sceneManager;
 	
