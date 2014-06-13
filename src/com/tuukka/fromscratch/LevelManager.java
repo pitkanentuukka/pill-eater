@@ -158,6 +158,8 @@ public class LevelManager {
 				    levelLoader.loadLevelFromAsset(activity.getAssets(), "level/"+levelList[levelID]);
 	}
 		
-		
-	
+	public void loadNextLevel() {
+		currentLevel++;
+		this.loadLevel(currentLevel);
+	}
 }
